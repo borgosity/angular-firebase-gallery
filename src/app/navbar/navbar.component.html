@@ -4,6 +4,16 @@
       <div class="navbar-header">
         <a class="navbar-brand logo" href="#">{{title}}</a>
       </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="navbar navbar-nav" *ngIf="(user|async)?.uid">
+          <li><a routerLink="/gallery">Image Gallery</a></li>
+          <li><a routerLink="/upload">Upload</a></li>
+        </ul>
+        <ul class="navbar navbar-nav account">
+          <li *ngIf="!(user|async)?.uid"><a routerLink="/login">Log In</a></li>
+          <li *ngIf="(user|async)?.uid"><a href="#" (click)="logOut()">Log Out</a></li>
+        </ul>
+      </div>
     </div>
 
   </nav>

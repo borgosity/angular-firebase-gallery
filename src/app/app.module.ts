@@ -1,9 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { FormsModule } from '@angular/forms';
+import { environment } from '../environments/environment'
+
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
+
 
 import { ImageService } from './services/image.service';
 import { AuthenticationService } from './services/authentication.service';
+import { AuthenticationGuardService } from './services/authentication-guard.service';
 import { UploadService } from './services/upload.service';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -28,9 +36,18 @@ import { UploadComponent } from './upload/upload.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AlertModule.forRoot()
+    AlertModule.forRoot(),
+    FormsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
-  providers: [ImageService],
+  providers: [
+    AuthenticationGuardService,
+    AuthenticationService,
+    ImageService,
+    UploadService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
