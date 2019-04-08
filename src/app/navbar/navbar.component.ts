@@ -13,7 +13,6 @@ export class NavbarComponent implements OnInit {
   title = "Gallery";
   user: Observable<firebase.User>;
 
-
   constructor(private authService: AuthenticationService, private router: Router) { }
 
   ngOnInit() {

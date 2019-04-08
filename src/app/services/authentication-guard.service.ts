@@ -19,13 +19,13 @@ export class AuthenticationGuardService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.user.pipe(
       map((auth) => {
-        console.log("mapping user auth");
         if (!auth) {
           this.router.navigateByUrl('/login');
           return false;
         }
         return true;
-      })
+      }),
+      take(1)
     );
   }
 }

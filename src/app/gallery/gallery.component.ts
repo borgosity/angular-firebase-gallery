@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./gallery.component.scss']
 })
 export class GalleryComponent implements OnInit, OnChanges{
+  title = "Photos"
+
   image: Observable<GalleryImage[]>;
 
 
@@ -17,6 +19,7 @@ export class GalleryComponent implements OnInit, OnChanges{
   ngOnInit() {
     this.image = this.imageService.getImages();
   }
+
   ngOnChanges() {
     this.image = this.imageService.getImages();
   }

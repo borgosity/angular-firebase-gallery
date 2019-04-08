@@ -23,6 +23,6 @@ export class ImageService {
   }
 
   getImages(): Observable<GalleryImage[]> {
-    return this.db.list('uploads');
+    return this.db.list('uploads').valueChanges();
   }
 }

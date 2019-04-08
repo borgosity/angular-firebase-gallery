@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ImageService } from '../../shared/image.service';
+import { ImageService } from '../services/image.service';
 import { ActivatedRoute } from '@angular/router'
 
 @Component({
@@ -12,8 +12,8 @@ export class ImageDetailComponent implements OnInit {
   constructor(private imageService: ImageService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.image = this.imageService.getImage(
-      +this.route.snapshot.params['id']    )
+    //this.image = this.imageService.getImage(
+    //  +this.route.snapshot.params['id']    )
   }
 
 }
