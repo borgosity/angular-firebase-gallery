@@ -16,9 +16,14 @@ export class UploadComponent {
 
   constructor(private uploadService: UploadService) { }
 
+  handleFiles() {
+
+  }
+
   uploadFiles() {
     const filesToUpload = this.files;
-    const filesIdx = _.range(filesToUpload.length);
+    console.log(_.range(filesToUpload.length));
+    //const filesIdx = _.range(filesToUpload.length);
   }
 
 }
