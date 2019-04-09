@@ -16,14 +16,18 @@ export class UploadComponent {
 
   constructor(private uploadService: UploadService) { }
 
-  handleFiles() {
-
+  handleFiles(event) {
+    this.files = event.target.files;
   }
 
   uploadFiles() {
     const filesToUpload = this.files;
-    console.log(_.range(filesToUpload.length));
-    //const filesIdx = _.range(filesToUpload.length);
+    const filesIdx = _.range(filesToUpload.length);
+    _.each(filesIdx, (idx) => {
+      //console.log(filesToUpload[idx]);
+      this.upload = new Upload(filesToUpload[idx]);
+      this.uploadService.uploadFile(this.upload);
+    });
   }
 
 }
