@@ -9,6 +9,7 @@ import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/dat
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { ImageService } from './services/image.service';
 import { AuthenticationService } from './services/authentication.service';
@@ -42,7 +43,8 @@ import { UploadComponent } from './upload/upload.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireStorageModule
   ],
   providers: [
     AuthenticationGuardService,

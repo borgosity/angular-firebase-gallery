@@ -24,9 +24,9 @@ export class UploadComponent {
     const filesToUpload = this.files;
     const filesIdx = _.range(filesToUpload.length);
     _.each(filesIdx, (idx) => {
-      //console.log(filesToUpload[idx]);
+      console.log("uploadFiles component: " + filesToUpload[idx]);
       this.upload = new Upload(filesToUpload[idx]);
-      this.uploadService.uploadFile(this.upload);
+      this.uploadService.uploadFile(this.upload, filesToUpload[idx]);
     });
   }
 

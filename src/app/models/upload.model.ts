@@ -1,12 +1,13 @@
 export class Upload {
   $key?: string;
-  file: File;
+  //file: File;
   url: string;
   name: string;
   progress: number;
-  createdOn: Date = new Date();
+  createdOn: Date;
 
   constructor(file: File) {
-    this.file = file;
+    //this.file = file;
+    this.createdOn = new Date();
   }
 }
