@@ -12,11 +12,9 @@ import { finalize, switchMap } from 'rxjs/operators';
 })
 export class UploadService {
 
-  private basePath = '/uploads';
   private uploads: AngularFirestoreCollection<GalleryImage>;
 
   private uploadPercent: Observable<number>;
-  private downloadURL: Observable<string>;
 
   constructor(
     private ngFire: AngularFireModule,
@@ -25,24 +23,25 @@ export class UploadService {
 
   uploadFile(upload: Upload, file: File) {
     console.log(file);
-    const filePath = this.basePath + "/" + file.name;
+
+    const filePath = "/" + upload.collection + "/" + file.name;
+    const db = this.db;
     const storageRef = this.storage.ref(filePath);
     const uploadTask = this.storage.upload(filePath, file);
     // monitor progrees
     this.uploadPercent = uploadTask.percentageChanges();
     this.uploadPercent.subscribe(uploadProgress);
-    // get url
-    this.downloadURL = storageRef.getDownloadURL();
-    this.downloadURL.subscribe(uploadedURL);
-
+    // check when upload is done
     uploadTask.snapshotChanges().pipe(
       finalize(() => {
         console.log("file uploaded");
+        storageRef.getDownloadURL().subscribe(uploadedURL);
       }),
     ).subscribe()
 
     function uploadedURL(url: string){
       upload.url = url;
+      saveFileData(upload);
       console.log(upload.url);
     }
 
@@ -51,29 +50,17 @@ export class UploadService {
       console.log(upload.progress);
     }
 
+    function saveFileData(uploaded: Upload) {
+      console.log("try adding to collection");
+      db.collection(uploaded.collection).add(Object.assign({}, uploaded))
+        .then(function (docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function (error) {
+          console.error("Error adding document: ", error);
+        });
+    }
 
-    //uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-    //  // state_change observer
-    //  (progress) => {
-    //    upload.progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
-    //    console.log(upload.progress + ", " + uploadTask.snapshot.downloadURL);
-    //  },
-    //  // error observer
-    //  (error) => {
-    //    console.log(error);
-    //  },
-    //  // success observer
-    //  (): any => {
-    //    upload.url = uploadTask.snapshot.downloadURL;
-    //    upload.name = file.name;
-    //    this.saveFileData(upload);
-    //  }
-    //);
   }
 
-  private saveFileData(upload: Upload) {
-    console.log("try adding to collection");
-    this.db.collection('${this.basePath}/').add(Object.assign({}, upload));
-    console.log("Upload Complete: " + upload.url);
-  }
 }

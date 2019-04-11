@@ -11,16 +11,16 @@ import { Observable } from 'rxjs';
 export class GalleryComponent implements OnInit, OnChanges{
   title = "Photos"
 
-  image: Observable<GalleryImage[]>;
+  images: Observable<GalleryImage[]>;
 
 
   constructor(private imageService: ImageService) { } 
 
   ngOnInit() {
-    this.image = this.imageService.getImages();
+    this.images = this.imageService.getImages();
   }
 
   ngOnChanges() {
-    this.image = this.imageService.getImages();
+    this.images = this.imageService.getImages();
   }
 }
