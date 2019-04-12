@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AlertModule } from 'ngx-bootstrap/alert';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../environments/environment'
 
@@ -38,7 +38,7 @@ import { UploadComponent } from './upload/upload.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AlertModule.forRoot(),
+    NgbModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,

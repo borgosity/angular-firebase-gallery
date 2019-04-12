@@ -14,7 +14,7 @@ export class UploadService {
 
   private uploads: AngularFirestoreCollection<GalleryImage>;
 
-  private uploadPercent: Observable<number>;
+  uploadPercent: Observable<number>;
 
   constructor(
     private ngFire: AngularFireModule,
@@ -36,6 +36,7 @@ export class UploadService {
       finalize(() => {
         console.log("file uploaded");
         storageRef.getDownloadURL().subscribe(uploadedURL);
+        upload.progress = 95;
       }),
     ).subscribe()
 
@@ -46,18 +47,18 @@ export class UploadService {
     }
 
     function uploadProgress(percent: number) {
-      upload.progress = percent;
-      console.log(upload.progress);
+      upload.progress = Math.round(percent - (percent * 0.1));
     }
 
     function saveFileData(uploaded: Upload) {
       console.log("try adding to collection");
       db.collection(uploaded.collection).add(Object.assign({}, uploaded))
         .then(function (docRef) {
+          uploaded.progress = 100;
           console.log("Document written with ID: ", docRef.id);
         })
         .catch(function (error) {
-          console.error("Error adding document: ", error);
+          console.error("Error adding image document: ", error);
         });
     }
 

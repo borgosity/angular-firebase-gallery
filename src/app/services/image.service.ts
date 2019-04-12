@@ -21,7 +21,6 @@ export class ImageService {
   }
 
   getImages(): Observable<GalleryImage[]> {
-    console.log("getting images");
     return this.db.collection('uploads').valueChanges();
   }
 }

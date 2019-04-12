@@ -14,7 +14,8 @@ export class UploadComponent {
   files: FileList;
   upload: Upload;
 
-  constructor(private uploadService: UploadService) { }
+  constructor(private uploadService: UploadService) {
+  }
 
   handleFiles(event) {
     this.files = event.target.files;
