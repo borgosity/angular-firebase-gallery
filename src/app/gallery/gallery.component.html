@@ -2,9 +2,6 @@
   <h2>  {{title}}</h2>
   <ul id="thumbnailList">
     <li *ngFor="let image of images | async">
-      <p>
-        {{image}}...{{image.url}}...{{image.collection}}...{{image.name}}
-      </p>
       <a [routerLink]="['/image', image.$key]">
         <img src="{{image.url}}" class="tn"/>
       </a>

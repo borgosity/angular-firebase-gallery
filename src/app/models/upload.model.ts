@@ -1,5 +1,5 @@
 export class Upload {
-  $key?: string;
+  $key: string;
   url: string;
   collection: string;
   name: string;
@@ -8,5 +8,6 @@ export class Upload {
 
   constructor() {
     this.createdOn = new Date();
+    this.$key = this.createdOn.toDateString(); 
   }
 }

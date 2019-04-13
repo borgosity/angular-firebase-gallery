@@ -14,8 +14,8 @@ export class ImageDetailComponent implements OnInit {
   constructor(private imageService: ImageService, private route: ActivatedRoute) { }
 
   getImageUrl(key: string) {
-    console.log(key);
-    //this.imageUrl = this.imageService.getImage(key);
+    this.imageService.getImage(key).then(
+      url => this.imageUrl = url);
   }
 
   ngOnInit() {

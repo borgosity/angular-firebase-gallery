@@ -24,27 +24,18 @@ export class ImageService {
     return this.db.collection('uploads').valueChanges();
   }
 
-  printImages() {
-
-  }
-
-  getImage(key: string): string {
-    var url = '';
-    this.db.collection('uploads').doc(key).ref.get()
+  getImage(key: string){
+    return this.db.collection('uploads').doc(key).ref.get()
       .then(function (doc) {
         if (doc.exists) {
-          url = doc.data().url;
-          console.log("Document data:", doc.data());
-        } else {
-          // doc.data() will be undefined in this case
-          url = 'undefined';
-          console.log("No such document!");
+          return doc.data().url;
+        }
+        else {     
+          return 'undefined';
         }
       })
       .catch(function (error) {
         console.log("Error getting document:", error);
       });
-
-    return url;
   }
 }
