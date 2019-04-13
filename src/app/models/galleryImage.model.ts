@@ -1,5 +1,6 @@
 export interface GalleryImage {
   $key?: string;
-  name?: string;
   url?: string;
+  name?: string;
+  collection?: string;
 }

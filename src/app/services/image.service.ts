@@ -23,4 +23,28 @@ export class ImageService {
   getImages(): Observable<GalleryImage[]> {
     return this.db.collection('uploads').valueChanges();
   }
+
+  printImages() {
+
+  }
+
+  getImage(key: string): string {
+    var url = '';
+    this.db.collection('uploads').doc(key).ref.get()
+      .then(function (doc) {
+        if (doc.exists) {
+          url = doc.data().url;
+          console.log("Document data:", doc.data());
+        } else {
+          // doc.data() will be undefined in this case
+          url = 'undefined';
+          console.log("No such document!");
+        }
+      })
+      .catch(function (error) {
+        console.log("Error getting document:", error);
+      });
+
+    return url;
+  }
 }

@@ -40,7 +40,8 @@ export class UploadService {
       }),
     ).subscribe()
 
-    function uploadedURL(url: string){
+    function uploadedURL(url: string) {
+      upload.$key = '#' + Math.random();
       upload.url = url;
       saveFileData(upload);
       console.log(upload.url);
@@ -55,6 +56,7 @@ export class UploadService {
       db.collection(uploaded.collection).add(Object.assign({}, uploaded))
         .then(function (docRef) {
           uploaded.progress = 100;
+
           console.log("Document written with ID: ", docRef.id);
         })
         .catch(function (error) {
