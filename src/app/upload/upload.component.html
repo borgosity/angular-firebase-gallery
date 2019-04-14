@@ -1,13 +1,18 @@
 <div class="container">
   <h2 class="heading">Upload New Images</h2>
-  <div class="form-group">
-    <input class="form-control" placeholder="Gallery Folder" />
+  <select class="form-control padding" [(ngModel)]="albumOption">
+    <option value="selectAlbum" selected>Select Album</option>
+    <option value="addAlbum">Add Album</option>
+  </select>
+  <div class="form-inline padding" *ngIf="albumOption == 'addAlbum'">
+    <input class="form-control"  placeholder="Photo Album" />
+    <button class="form-control btn-inline" (click)="addAlbum()">Add Album</button>
   </div>
-  <div class="form-group">
+  <div class="form-group padding">
     <input class="form-control-file" type="file" (change)="handleFiles($event)" multiple />
   </div>
-  <div class="form-group">
+  <div class="form-horizontal padding">
     <button class="btn btn-primary" (click)="uploadFiles()" [disabled]="upload || !files">Upload Images</button>
   </div>
-      <ngb-progressbar *ngIf="upload" showValue="true" type="" [value]="upload?.progress"></ngb-progressbar>
+  <ngb-progressbar *ngIf="upload" showValue="true" type="" [value]="upload?.progress"></ngb-progressbar>
 </div>

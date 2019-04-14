@@ -1,8 +1,10 @@
 export class Upload {
   $key: string;
   url: string;
-  collection: string;
   name: string;
+  album: string;
+  caption: string;
+  collection: string;
   progress: number;
   createdOn: Date;
 
