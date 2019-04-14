@@ -1,13 +1,15 @@
 <div class="container">
   <h2 class="heading">Upload New Images</h2>
-  <select class="form-control padding" [(ngModel)]="albumOption">
-    <option value="selectAlbum" selected>Select Album</option>
-    <option value="addAlbum">Add Album</option>
-  </select>
-  <div class="form-inline padding" *ngIf="albumOption == 'addAlbum'">
-    <input class="form-control"  placeholder="Photo Album" />
-    <button class="form-control btn-inline" (click)="addAlbum()">Add Album</button>
-  </div>
+  <form [formGroup]="albumForm">
+    <select class="form-control padding" formControlName="albumOptions" [compareWith]="compareFn">
+      <option [ngValue]="album.name" *ngFor="let album of albums | async">{{album.name}}</option>
+      <option [ngValue]="'addAlbum'">Add Album</option>
+    </select>
+    <div class="form-inline padding" *ngIf="albumForm.get('albumOptions').value == 'addAlbum'">
+      <input class="form-control"  placeholder="Photo Album" />
+      <button class="form-control btn-inline" (click)="addAlbum()">Add Album</button>
+    </div>
+  </form>
   <div class="form-group padding">
     <input class="form-control-file" type="file" (change)="handleFiles($event)" multiple />
   </div>

@@ -10,9 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class GalleryComponent implements OnInit, OnChanges{
   title = "Photos"
-
   images: Observable<GalleryImage[]>;
-
 
   constructor(private imageService: ImageService) { } 
 

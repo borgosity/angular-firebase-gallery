@@ -1,7 +1,12 @@
-import { Component} from '@angular/core';
+import { Component, OnInit, OnChanges} from '@angular/core';
 import { UploadService } from '../services/upload.service';
 import { Upload } from '../models/upload.model';
+import { AlbumService } from '../services/album.service';
+import { Album } from '../models/album.model';
 import * as _ from 'lodash';
+import { Observable } from 'rxjs';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+
 
 
 @Component({
@@ -9,12 +14,33 @@ import * as _ from 'lodash';
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent {
+export class UploadComponent implements OnInit, OnChanges {
 
   files: FileList;
   upload: Upload;
+  albums: Observable<Album[]>;
+  albumForm: FormGroup;
+  albumOptions: FormControl;
+  newAlbum = false;
 
-  constructor(private uploadService: UploadService) {
+  constructor(
+    private uploadService: UploadService,
+    private albumService: AlbumService,
+    private fb: FormBuilder) {
+    this.albumForm = new FormGroup({
+      albumOptions: new FormControl()
+    }); 
+  }
+
+  ngOnInit() {
+    this.albums = this.albumService.getAlbums();
+    this.albumForm = this.fb.group({
+      albumOptions: this.albums
+    });
+  }
+
+  ngOnChanges() {
+    this.albums = this.albumService.getAlbums();
   }
 
   handleFiles(event) {
@@ -32,6 +58,10 @@ export class UploadComponent {
       this.upload.collection = 'uploads';
       this.uploadService.uploadFile(this.upload, filesToUpload[idx]);
     });
+  }
+
+  compareFn(c1: any, c2: any): boolean {
+    return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
 
 }

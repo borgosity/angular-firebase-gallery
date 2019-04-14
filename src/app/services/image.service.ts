@@ -35,7 +35,7 @@ export class ImageService {
         }
       })
       .catch(function (error) {
-        console.log("Error getting document:", error);
+        console.log("Error getting image:", error);
       });
   }
 }
