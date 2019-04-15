@@ -1,17 +1,19 @@
 <div class="container">
   <h2 class="heading">Upload New Images</h2>
   <form [formGroup]="albumForm">
-    <select class="form-control padding" formControlName="albumOptions" [compareWith]="compareFn">
-      <option [ngValue]="album.name" *ngFor="let album of albums | async">{{album.name}}</option>
+    <label class="form-inline" for="albums"> Album: </label>
+    <select class="form-control padding" id="albums" required formControlName="albumOptions" [compareWith]="compareFn">
+      <option [ngValue]="album.name" *ngFor="let album of albums | async" [selected]="'Uploads'">{{album.name}}</option>
       <option [ngValue]="'addAlbum'">Add Album</option>
     </select>
     <div class="form-inline padding" *ngIf="albumForm.get('albumOptions').value == 'addAlbum'">
-      <input class="form-control"  placeholder="Photo Album" />
-      <button class="form-control btn-inline" (click)="addAlbum()">Add Album</button>
+      <input class="form-control" id="albumName" placeholder="New Photo Album Name" formControlName="albumName" required/>
+      <button class="form-control btn-inline" (click)="addAlbum()" [disabled]="albumForm.get('albumName').value == ''">Add Album</button>
     </div>
   </form>
   <div class="form-group padding">
-    <input class="form-control-file" type="file" (change)="handleFiles($event)" multiple />
+    <label class="form-inline" for="browse"> Select Photos: </label>
+    <input class="form-control-file" id="browse" type="file" (change)="handleFiles($event)" multiple />
   </div>
   <div class="form-horizontal padding">
     <button class="btn btn-primary" (click)="uploadFiles()" [disabled]="upload || !files">Upload Images</button>

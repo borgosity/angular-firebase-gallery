@@ -1,3 +1,10 @@
-<p>
-  album works!
-</p>
+<div class="row">
+  <h2>  {{title}}</h2>
+  <ul id="thumbnailList">
+    <li *ngFor="let image of images | async">
+      <a [routerLink]="['/image', image.$key]">
+        <img src="{{image.url}}" class="tn" />
+      </a>
+    </li>
+  </ul>
+</div>

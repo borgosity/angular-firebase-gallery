@@ -1,9 +1,14 @@
 <div class="row">
   <h2>  {{title}}</h2>
   <ul id="thumbnailList">
-    <li *ngFor="let image of images | async">
-      <a [routerLink]="['/image', image.$key]">
-        <img src="{{image.url}}" class="tn"/>
+    <li *ngFor="let album of albums | async">
+      <a [routerLink]="['/album', album.$key]">
+        <div class="album-tn">
+          <div class="album-tn-inlay"></div>
+          <div class="album-tn-name">
+            <h2 class="album-tn-text">{{album.name}}</h2>
+          </div>
+        </div>
       </a>
     </li>
   </ul>

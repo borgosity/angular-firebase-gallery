@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, OnChanges} from '@angular/core';
-import { ImageService } from '../services/image.service';
-import { GalleryImage } from '../models/galleryImage.model';
+import { Component, OnInit, OnChanges} from '@angular/core';
+import { AlbumService } from '../services/album.service';
 import { Observable } from 'rxjs';
+import { Album } from '../models/album.model';
 
 @Component({
   selector: 'app-gallery',
@@ -9,16 +9,22 @@ import { Observable } from 'rxjs';
   styleUrls: ['./gallery.component.scss']
 })
 export class GalleryComponent implements OnInit, OnChanges{
-  title = "Photos"
-  images: Observable<GalleryImage[]>;
+  title = "Photo Albums"
+  albums: Observable<Album[]>;
 
-  constructor(private imageService: ImageService) { } 
+  constructor(private albumService: AlbumService) {
+  } 
 
   ngOnInit() {
-    this.images = this.imageService.getImages();
+    this.albums = this.albumService.getAlbums();
   }
 
   ngOnChanges() {
-    this.images = this.imageService.getImages();
+    this.albums = this.albumService.getAlbums();
+  }
+
+  randomColor() {
+
+    return 'hsl(' + (Math.random() * 360) + ', 50%, 50%)';
   }
 }

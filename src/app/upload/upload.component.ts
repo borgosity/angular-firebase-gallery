@@ -21,21 +21,23 @@ export class UploadComponent implements OnInit, OnChanges {
   albums: Observable<Album[]>;
   albumForm: FormGroup;
   albumOptions: FormControl;
-  newAlbum = false;
+ 
 
   constructor(
     private uploadService: UploadService,
     private albumService: AlbumService,
     private fb: FormBuilder) {
     this.albumForm = new FormGroup({
-      albumOptions: new FormControl()
+      albumOptions: new FormControl(),
+      albumName: new FormControl()
     }); 
   }
 
   ngOnInit() {
     this.albums = this.albumService.getAlbums();
     this.albumForm = this.fb.group({
-      albumOptions: this.albums
+      albumOptions: this.albums,
+      albumName: ''
     });
   }
 
@@ -58,6 +60,11 @@ export class UploadComponent implements OnInit, OnChanges {
       this.upload.collection = 'uploads';
       this.uploadService.uploadFile(this.upload, filesToUpload[idx]);
     });
+  }
+
+  addAlbum() {
+    console.log("addAlbum: " + this.albumForm.controls['albumName'].value);
+    this.albumService.addAlbum(new Album(this.albumForm.controls['albumName'].value));
   }
 
   compareFn(c1: any, c2: any): boolean {
