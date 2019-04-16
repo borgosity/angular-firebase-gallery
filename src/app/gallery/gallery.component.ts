@@ -23,8 +23,4 @@ export class GalleryComponent implements OnInit, OnChanges{
     this.albums = this.albumService.getAlbums();
   }
 
-  randomColor() {
-
-    return 'hsl(' + (Math.random() * 360) + ', 50%, 50%)';
-  }
 }

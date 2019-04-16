@@ -17,6 +17,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 export class UploadComponent implements OnInit, OnChanges {
 
   files: FileList;
+  albumKey = '';
   upload: Upload;
   albums: Observable<Album[]>;
   albumForm: FormGroup;
@@ -53,11 +54,12 @@ export class UploadComponent implements OnInit, OnChanges {
   uploadFiles() {
     const filesToUpload = this.files;
     const filesIdx = _.range(filesToUpload.length);
+    console.log("---------------->> " + this.albumForm.get('albumOptions').value.$key);
     _.each(filesIdx, (idx) => {
       console.log("uploadFiles component: " + filesToUpload[idx]);
       this.upload = new Upload();
       this.upload.name = filesToUpload[idx].name;
-      this.upload.collection = 'uploads';
+      this.upload.collection = this.albumForm.get('albumOptions').value;
       this.uploadService.uploadFile(this.upload, filesToUpload[idx]);
     });
   }

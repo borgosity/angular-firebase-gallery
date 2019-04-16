@@ -4,7 +4,7 @@
     <li *ngFor="let album of albums | async">
       <a [routerLink]="['/album', album.$key]">
         <div class="album-tn">
-          <div class="album-tn-inlay"></div>
+          <div class="album-tn-inlay" [style.background-color]="album.color"></div>
           <div class="album-tn-name">
             <h2 class="album-tn-text">{{album.name}}</h2>
           </div>

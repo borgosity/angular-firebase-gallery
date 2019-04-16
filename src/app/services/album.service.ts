@@ -26,12 +26,14 @@ export class AlbumService {
 
   addAlbum(album: Album) {
     const filePath = "/" + this.collection + "/" + album.name;
+    console.log("add album: " + filePath);
+
     const db = this.db;
 
     db.collection(this.collection).add(Object.assign({}, album))
       .then(function (docRef) {
-        docRef.update({ $key: docRef.id});
         console.log("Album written with ID: ", docRef.id);
+        return docRef.id;
       })
       .catch(function (error) {
         console.error("Error adding album document: ", error);
