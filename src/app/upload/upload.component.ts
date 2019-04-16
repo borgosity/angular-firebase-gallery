@@ -5,7 +5,6 @@ import { AlbumService } from '../services/album.service';
 import { Album } from '../models/album.model';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 
 
@@ -15,31 +14,20 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent implements OnInit, OnChanges {
-
   files: FileList;
   albumKey = '';
   upload: Upload;
   albums: Observable<Album[]>;
-  albumForm: FormGroup;
-  albumOptions: FormControl;
+  selectedAlbum = 'undefined';
  
 
   constructor(
     private uploadService: UploadService,
-    private albumService: AlbumService,
-    private fb: FormBuilder) {
-    this.albumForm = new FormGroup({
-      albumOptions: new FormControl(),
-      albumName: new FormControl()
-    }); 
+    private albumService: AlbumService) {
   }
 
   ngOnInit() {
     this.albums = this.albumService.getAlbums();
-    this.albumForm = this.fb.group({
-      albumOptions: this.albums,
-      albumName: ''
-    });
   }
 
   ngOnChanges() {
@@ -51,22 +39,25 @@ export class UploadComponent implements OnInit, OnChanges {
     this.upload = null;
   }
 
+  selectChangeHandler(event: any) {
+    this.selectedAlbum = event.target.value;
+  }
+
   uploadFiles() {
     const filesToUpload = this.files;
     const filesIdx = _.range(filesToUpload.length);
-    console.log("---------------->> " + this.albumForm.get('albumOptions').value.$key);
     _.each(filesIdx, (idx) => {
       console.log("uploadFiles component: " + filesToUpload[idx]);
       this.upload = new Upload();
       this.upload.name = filesToUpload[idx].name;
-      this.upload.collection = this.albumForm.get('albumOptions').value;
+      this.upload.collection = this.selectedAlbum;
       this.uploadService.uploadFile(this.upload, filesToUpload[idx]);
     });
   }
 
-  addAlbum() {
-    console.log("addAlbum: " + this.albumForm.controls['albumName'].value);
-    this.albumService.addAlbum(new Album(this.albumForm.controls['albumName'].value));
+  addAlbum(name: any) {
+    this.albumService.addAlbum(new Album(name));
+    this.selectedAlbum = 'undefined';
   }
 
   compareFn(c1: any, c2: any): boolean {

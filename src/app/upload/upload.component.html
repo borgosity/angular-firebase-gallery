@@ -1,22 +1,25 @@
 <div class="container">
-  <h2 class="heading">Upload New Images</h2>
-  <form [formGroup]="albumForm">
-    <label class="form-inline" for="albums"> Album: </label>
-    <select class="form-control padding" id="albums" required formControlName="albumOptions" [compareWith]="compareFn">
-      <option [ngValue]="album.name" *ngFor="let album of albums | async" [selected]="'Uploads'">{{album.name}}</option>
-      <option [ngValue]="'addAlbum'">Add Album</option>
+  <h2 class="heading">Upload New Photos</h2>
+  <div class="upload-form padding" >
+    <label class="form-inline padding" for="albums"> Album: </label>
+    <select class="form-control padding" id="albums" #albumSelect required (change)="selectChangeHandler($event)">
+      <option value="undefined" [selected]="selectedAlbum == 'undefined'">Select Album</option>
+      <option value="{{album.$key}}" *ngFor="let album of albums | async">{{album.name}}</option>
+      <option value="addAlbum">Add Album</option>
     </select>
-    <div class="form-inline padding" *ngIf="albumForm.get('albumOptions').value == 'addAlbum'">
-      <input class="form-control" id="albumName" placeholder="New Photo Album Name" formControlName="albumName" required/>
-      <button class="form-control btn-inline" (click)="addAlbum()" [disabled]="albumForm.get('albumName').value == ''">Add Album</button>
+    <div class="form-horizontal padding" *ngIf="selectedAlbum == 'addAlbum'">
+      <input class="form-control" #albumName id="albumNames" value="" placeholder="New Photo Album Name" required/>
+      <button class="btn btn-primary padding" (click)="addAlbum(albumName.value)" [disabled]="selectedAlbum == ''">Add Album</button>
     </div>
-  </form>
-  <div class="form-group padding">
-    <label class="form-inline" for="browse"> Select Photos: </label>
-    <input class="form-control-file" id="browse" type="file" (change)="handleFiles($event)" multiple />
   </div>
-  <div class="form-horizontal padding">
-    <button class="btn btn-primary" (click)="uploadFiles()" [disabled]="upload || !files">Upload Images</button>
+  <div class="upload-form padding" *ngIf="selectedAlbum != 'addAlbum'">
+    <div class="form-group padding" >
+      <label class="form-inline" for="browse"> Select Photos: </label>
+      <input class="form-control-file" id="browse" type="file" (change)="handleFiles($event)" multiple [disabled]="selectedAlbum == 'undefined' || selectedAlbum == 'addAlbum'"/>
+    </div>
+    <div class="form-horizontal padding">
+      <button class="btn btn-primary" (click)="uploadFiles()" [disabled]="upload || !files">Upload Images</button>
+    </div>
+    <ngb-progressbar *ngIf="upload" showValue="true" type="" [value]="upload?.progress"></ngb-progressbar>
   </div>
-  <ngb-progressbar *ngIf="upload" showValue="true" type="" [value]="upload?.progress"></ngb-progressbar>
 </div>

@@ -51,7 +51,7 @@ export class UploadService {
     }
 
     function saveFileData(uploaded: Upload) {
-      console.log("try adding to collection");
+      console.log("try adding to collection" + JSON.stringify(uploaded));
       db.collection(uploaded.collection).add(Object.assign({}, uploaded))
         .then(function (docRef) {
           docRef.update({ $key: docRef.id, progress: 100 });

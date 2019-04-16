@@ -33,7 +33,7 @@ export class AlbumService {
     db.collection(this.collection).add(Object.assign({}, album))
       .then(function (docRef) {
         console.log("Album written with ID: ", docRef.id);
-        return docRef.id;
+        docRef.update({ $key: docRef.id});
       })
       .catch(function (error) {
         console.error("Error adding album document: ", error);
