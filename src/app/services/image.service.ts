@@ -11,6 +11,7 @@ import { GalleryImage } from '../models/galleryImage.model';
 })
 export class ImageService {
   private uid: string;
+  private currentAlbum: string;
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {
     this.afAuth.authState.subscribe(auth => {
@@ -20,12 +21,13 @@ export class ImageService {
     });
   }
 
-  getImages(): Observable<GalleryImage[]> {
-    return this.db.collection('uploads').valueChanges();
+  getImages(albumKey: string): Observable<GalleryImage[]> {
+    this.currentAlbum = albumKey;
+    return this.db.collection(albumKey).valueChanges();
   }
 
-  getImage(key: string){
-    return this.db.collection('uploads').doc(key).ref.get()
+  getImage(imageKey: string){
+    return this.db.collection(this.currentAlbum).doc(imageKey).ref.get()
       .then(function (doc) {
         if (doc.exists) {
           return doc.data().url;
