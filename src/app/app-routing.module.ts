@@ -10,9 +10,9 @@ import { AuthenticationGuardService } from './services/authentication-guard.serv
 
 const routes: Routes = [
   { path: "gallery", component: GalleryComponent, canActivate: [AuthenticationGuardService] },
-  { path: "album/:id", component: AlbumComponent, canActivate: [AuthenticationGuardService] },
+  { path: "album/:name/:id", component: AlbumComponent, canActivate: [AuthenticationGuardService] },
   { path: "upload", component: UploadComponent, canActivate: [AuthenticationGuardService] },
-  { path: "image/:id", component: ImageDetailComponent, canActivate: [AuthenticationGuardService] },
+  { path: "image/:album/:id", component: ImageDetailComponent, canActivate: [AuthenticationGuardService] },
   { path: "", redirectTo: "/gallery", pathMatch: 'full' },
   { path: "login", component: LoginComponent }
 ];

@@ -14,8 +14,11 @@ li {
   box-shadow: #555 1px 1px 8px 1px;
   cursor: pointer;
   width: 300px;
+  min-width: 200px;
+  min-height: 200px;
 }
 
 h2 {
+  margin-top: 20px;
   margin-bottom: 20px;
 }

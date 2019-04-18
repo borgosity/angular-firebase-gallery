@@ -2,7 +2,7 @@
   <h2>  {{title}}</h2>
   <ul id="thumbnailList">
     <li *ngFor="let album of albums | async">
-      <a [routerLink]="['/album', album.$key]">
+      <a [routerLink]="['/album', album.name ,album.$key]">
         <div class="album-tn">
           <div class="album-tn-inlay" [style.background-color]="album.color"></div>
           <div class="album-tn-name">

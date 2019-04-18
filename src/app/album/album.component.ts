@@ -11,11 +11,14 @@ import { Observable } from 'rxjs';
 })
 export class AlbumComponent implements OnInit {
   title = 'Photos';
+  key: string;
   images: Observable<GalleryImage[]>;
 
   constructor(private imageService: ImageService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.title = this.route.snapshot.params['name'] + ' Photos';
+    this.key = this.route.snapshot.params['id'];
     this.getAlbumImages(this.route.snapshot.params['id']);
   }
 

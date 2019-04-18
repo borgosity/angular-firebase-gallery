@@ -1,8 +1,8 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { ImageService } from '../services/image.service';
-import { ActivatedRoute } from '@angular/router'
-import { GalleryImage } from '../models/galleryImage.model';
-import { Observable } from 'rxjs';
+import { AlbumService } from '../services/album.service';
+import { ActivatedRoute } from '@angular/router';
+import { Album } from '../models/album.model';
 
 @Component({
   selector: 'app-image-detail',
@@ -11,15 +11,25 @@ import { Observable } from 'rxjs';
 })
 export class ImageDetailComponent implements OnInit {
   private imageUrl = '';
-  constructor(private imageService: ImageService, private route: ActivatedRoute) { }
+  private album: Album;
+  constructor(private imageService: ImageService, private albumService: AlbumService, private route: ActivatedRoute) {
+    this.album = new Album('undefined');
+  }
 
-  getImageUrl(key: string) {
-    this.imageService.getImage(key).then(
+  getImageUrl(imageKey: string, albumKey: string) {
+    this.imageService.getImage(imageKey, albumKey).then(
       url => this.imageUrl = url);
   }
 
   ngOnInit() {
-    this.getImageUrl(this.route.snapshot.params['id']);
+    this.getImageUrl(this.route.snapshot.params['id'], this.route.snapshot.params['album']);
+    this.albumService.getAlbum(this.route.snapshot.params['album']).then(
+      album => {
+        if (album){
+          this.album = album
+        }
+      }
+    );
   }
 
 }

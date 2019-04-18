@@ -26,8 +26,9 @@ export class ImageService {
     return this.db.collection(albumKey).valueChanges();
   }
 
-  getImage(imageKey: string){
-    return this.db.collection(this.currentAlbum).doc(imageKey).ref.get()
+  getImage(imageKey: string, albumKey: string) {
+    this.currentAlbum = albumKey;
+    return this.db.collection(albumKey).doc(imageKey).ref.get()
       .then(function (doc) {
         if (doc.exists) {
           return doc.data().url;

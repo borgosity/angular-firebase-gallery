@@ -1,4 +1,11 @@
 <div class="row">
+  <div class="col-md-12 back-row">
+    <a class="back-btn" [routerLink]="['/album', album.name , album.$key]">
+      < Album
+    </a>
+  </div>
+</div>
+<div class="row">
   <div class="col-md-12">
       <img src="{{imageUrl}}" class="img-container"/>
   </div>

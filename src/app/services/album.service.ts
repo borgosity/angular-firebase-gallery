@@ -48,10 +48,10 @@ export class AlbumService {
     return this.db.collection('albums').doc(key).ref.get()
       .then(function (doc) {
         if (doc.exists) {
-          return doc.data().name;
+          return doc.data();
         }
         else {
-          return 'undefined';
+          return new Album('undefined');
         }
       })
       .catch(function (error) {
