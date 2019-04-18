@@ -26,6 +26,7 @@ import { ImageFilterPipe } from './pipes/image-filter.pipe';
 import { LoginComponent } from './login/login.component';
 import { UploadComponent } from './upload/upload.component';
 import { AlbumComponent } from './album/album.component';
+import { ContextMenuComponent } from './context-menu/context-menu.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { AlbumComponent } from './album/album.component';
     LoginComponent,
     UploadComponent,
     AlbumComponent,
+    ContextMenuComponent,
   ],
   imports: [
     BrowserModule,
