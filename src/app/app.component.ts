@@ -18,14 +18,4 @@ export class AppComponent {
      this.contextMenuSub = contextMenuService.contextMenuOpen.subscribe(open => this.contextMenuOpen = open );
   }
 
-  onMainContainerClick() {
-    if (this.contextMenuOpen) {
-      this.closeContextMenu();
-    }
-  }
-
-  closeContextMenu() {
-    this.contextMenuService.closeContextMenu();
-  }
-
 }

@@ -1,5 +1,7 @@
-<div class="cm-background" (click)="onMainContainerClick()">
-  <div class="cm-options" [ngStyle]="{'left': menuPos.x + 'px', 'top': menuPos.y + 'px'}">
-
-  </div>  
+<div class="cm-background"
+     (click)="onMainContainerClick()"
+     (contextmenu)="onRightClick()" oncontextmenu="return false">
 </div>
+<div class="cm-options" [ngStyle]="{'left': menuPos.x + 'px', 'top': menuPos.y + 'px'}">
+  <app-image-menu oncontextmenu="return false"></app-image-menu>
+</div>  

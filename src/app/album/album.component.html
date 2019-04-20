@@ -1,5 +1,5 @@
 <div class="row">
-  <h2>  {{title}}</h2>
+  <h2 class="container-title">  {{title}}</h2>
   <ul id="thumbnailList">
     <li *ngFor="let image of images | async">
       <a [routerLink]="['/image', key , image.$key]">

@@ -42,4 +42,12 @@ export class ImageDetailComponent implements OnInit {
     this.contextMenu.openContextMenu(event);
   }
 
+  onClickEvent(event) {
+    console.log(event.button);
+    if (this.contextMenu.contextMenuOpen.getValue()) {
+      console.log("close context menu from Image Detail");
+      this.contextMenu.closeContextMenu();
+    }
+  }
+
 }

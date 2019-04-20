@@ -27,6 +27,8 @@ import { LoginComponent } from './login/login.component';
 import { UploadComponent } from './upload/upload.component';
 import { AlbumComponent } from './album/album.component';
 import { ContextMenuComponent } from './context-menu/context-menu.component';
+import { ImageMenuComponent } from './context-menu/image-menu/image-menu.component';
+import { AlbumMenuComponent } from './context-menu/album-menu/album-menu.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { ContextMenuComponent } from './context-menu/context-menu.component';
     UploadComponent,
     AlbumComponent,
     ContextMenuComponent,
+    ImageMenuComponent,
+    AlbumMenuComponent,
   ],
   imports: [
     BrowserModule,

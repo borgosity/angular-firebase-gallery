@@ -23,8 +23,15 @@ export class ContextMenuComponent implements OnInit {
 
   closeContextMenu() {
     console.log("close context menu from context menu");
-    //this.contextMenuService.closeContextMenu();
+    this.contextMenuService.closeContextMenu();
   }
 
+  onMainContainerClick() {
+    this.closeContextMenu();
+  }
+
+  onRightClick() {
+    this.closeContextMenu();
+  }
 
 }

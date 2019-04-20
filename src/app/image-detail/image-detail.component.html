@@ -7,7 +7,9 @@
 </div>
 <div class="row">
   <div class="col-md-12">
-      <img src="{{imageUrl}}" class="img-container" (contextmenu)="onRightClick($event)" oncontextmenu="return false"/>
+      <div class="img-bg">
+        <img src="{{imageUrl}}" class="img-container" (click)="onClickEvent($event)" (contextmenu)="onRightClick($event)" oncontextmenu="return false"/>
+      </div>
   </div>
 </div>
 <div class="row">

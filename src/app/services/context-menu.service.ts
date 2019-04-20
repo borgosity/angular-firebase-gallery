@@ -16,12 +16,9 @@ export class ContextMenuService {
   }
 
   openContextMenu(event) {
-    if (!this.contextMenuOpen.getValue()) {
       console.log("open context menu");
       this.contextMenuOpen.next(true);
-
       this.clickPosition.next({x: event.clientX, y: event.clientY});
-    }
   }
 
   closeContextMenu() {
