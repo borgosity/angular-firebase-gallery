@@ -13,8 +13,10 @@ export class OnlyImgClickDirective {
 
 
   @HostListener('click', ['$event']) onLeftClick(event: any) {
-    this.contextMenuService.closeContextMenu();
-    console.log('image only LEFT click directive');
+    if (this.contextMenuService.contextMenuOpen.getValue()) {
+      this.contextMenuService.closeContextMenu();
+      console.log('image only LEFT click directive');
+    }
   }
 
   @HostListener('contextmenu', ['$event']) onRightClick(event: any) {

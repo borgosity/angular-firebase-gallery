@@ -31,6 +31,7 @@ import { ImageMenuComponent } from './context-menu/image-menu/image-menu.compone
 import { AlbumMenuComponent } from './context-menu/album-menu/album-menu.component';
 import { OnlyImgClickDirective } from './directives/only-img-click.directive';
 import { OnlyAlbumClickDirective } from './directives/only-album-click.directive';
+import { ImageDataComponent } from './image-data/image-data.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { OnlyAlbumClickDirective } from './directives/only-album-click.directive
     AlbumMenuComponent,
     OnlyImgClickDirective,
     OnlyAlbumClickDirective,
+    ImageDataComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,9 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Upload } from '../models/upload.model';
 import { Observable } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
+import { ImageDataService } from './image-data.service';
+import { AuthenticationService } from './authentication.service';
+import { ImageViewData } from '../models/imageViewData.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +16,22 @@ import { finalize, switchMap } from 'rxjs/operators';
 export class UploadService {
 
   private uploads: AngularFirestoreCollection<GalleryImage>;
+  private user: Observable<firebase.User>;
+  private userEmail: string;
 
   uploadPercent: Observable<number>;
 
   constructor(
     private ngFire: AngularFireModule,
     private storage: AngularFireStorage,
-    private db: AngularFirestore) { }
+    private db: AngularFirestore,
+    private dataService: ImageDataService,
+    private authService: AuthenticationService) {
+
+    this.user = this.authService.authUser();
+    this.user.subscribe((user) => this.userEmail = user.email);
+  }
+
 
   uploadFile(upload: Upload, file: File) {
     console.log(file);
@@ -28,6 +40,8 @@ export class UploadService {
     const db = this.db;
     const storageRef = this.storage.ref(filePath);
     const uploadTask = this.storage.upload(filePath, file);
+    const user = this.userEmail;
+    const dataService = this.dataService;
     // monitor progrees
     this.uploadPercent = uploadTask.percentageChanges();
     this.uploadPercent.subscribe(uploadProgress);
@@ -55,12 +69,29 @@ export class UploadService {
       db.collection(uploaded.collection).add(Object.assign({}, uploaded))
         .then(function (docRef) {
           docRef.update({ $key: docRef.id, progress: 100 });
+          addImageData(docRef.id);
           uploaded.progress = 100;
           console.log("Document written with ID: ", docRef.id);
         })
         .catch(function (error) {
           console.error("Error adding image document: ", error);
         });
+    }
+
+    function addImageData(imageKey: string) { 
+      const imageData: ImageViewData = {
+        $key: imageKey,
+        totalViews: 0,
+        userVeiws: [
+          {
+            user: user,
+            viewCount: 0,
+            longestView: 0
+          }
+        ]
+      };
+
+      dataService.addImageData(imageData);
     }
 
   }

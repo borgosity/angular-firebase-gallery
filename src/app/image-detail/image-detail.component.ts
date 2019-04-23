@@ -4,6 +4,10 @@ import { AlbumService } from '../services/album.service';
 import { ContextMenuService } from '../services/context-menu.service';
 import { ActivatedRoute } from '@angular/router';
 import { Album } from '../models/album.model';
+import { ContextMenuType } from '../models/contextMenuType.model';
+import { ImageData } from '../models/imageData.model';
+import { UserViewData } from '../models/userViewData.model';
+import { ImageDataService } from '../services/image-data.service';
 
 @Component({
   selector: 'app-image-detail',
@@ -14,9 +18,15 @@ export class ImageDetailComponent implements OnInit {
   private imageUrl = '';
   private album: Album;
 
+  private userKey: string; 
+  private startTime: number;
+  private userViewData: any;
+  imageData: any;
+
   constructor(
     private imageService: ImageService,
     private albumService: AlbumService,
+    private dataService: ImageDataService,
     private contextMenu: ContextMenuService,
     private route: ActivatedRoute) {
     this.album = new Album('loading...');
@@ -36,18 +46,20 @@ export class ImageDetailComponent implements OnInit {
         }
       }
     );
+    // set start time
+    this.getImageData(this.route.snapshot.params['id']);
   }
 
-  onRightClick(event) {
-    this.contextMenu.openContextMenu(event);
+  getImageData(imageKey: string) {
+    this.dataService.getImageData(imageKey)
+      .then(data => this.imageData = data)
+      .catch()
+      .finally();
   }
 
-  onClickEvent(event) {
-    console.log(event.button);
-    if (this.contextMenu.contextMenuOpen.getValue()) {
-      console.log("close context menu from Image Detail");
-      this.contextMenu.closeContextMenu();
-    }
+  updateViewTime() {
+    // total time equals current time minus start time
   }
+
 
 }

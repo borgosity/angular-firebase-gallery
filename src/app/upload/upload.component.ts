@@ -5,6 +5,7 @@ import { AlbumService } from '../services/album.service';
 import { Album } from '../models/album.model';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
+import { ImageDataService } from '../services/image-data.service';
 
 
 

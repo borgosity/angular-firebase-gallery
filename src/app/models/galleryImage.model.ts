@@ -3,4 +3,5 @@ export interface GalleryImage {
   url?: string;
   name?: string;
   collection?: string;
+  caption?: string;
 }
