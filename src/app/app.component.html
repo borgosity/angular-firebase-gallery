@@ -1,7 +1,9 @@
-<div class="container">
-  <app-navbar></app-navbar>
-  <router-outlet></router-outlet>
-  <app-context-menu *ngIf="contextMenuOpen"></app-context-menu>
+<div (click)="onMainWindowClick()">
+  <div class="container">
+    <app-navbar></app-navbar>
+    <router-outlet></router-outlet>
+    <app-context-menu *ngIf="contextMenuOpen"></app-context-menu>
+  </div>
 </div>
 
 
