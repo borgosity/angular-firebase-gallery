@@ -1,0 +1,9 @@
+<div>
+  <p> Image ID: {{imageData.$key}}</p>
+  <p> Views: {{imageData.totalViews}}</p>
+  <div *ngFor="let data of imageData.userVeiws">
+    <p> User: {{data.user}}</p>
+    <p> Views: {{data.viewCount}}</p>
+    <p> Longest: {{data.longestView}}</p>
+  </div>
+</div>
