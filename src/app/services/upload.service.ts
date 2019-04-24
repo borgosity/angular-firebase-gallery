@@ -82,7 +82,7 @@ export class UploadService {
       const imageData: ImageViewData = {
         $key: imageKey,
         totalViews: 0,
-        userVeiws: [
+        userViews: [
           {
             user: user,
             viewCount: 0,

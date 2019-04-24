@@ -5,9 +5,11 @@ import { ContextMenuService } from '../services/context-menu.service';
 import { ActivatedRoute } from '@angular/router';
 import { Album } from '../models/album.model';
 import { ContextMenuType } from '../models/contextMenuType.model';
-import { ImageData } from '../models/imageData.model';
+import { ImageViewData } from '../models/imageViewData.model';
 import { UserViewData } from '../models/userViewData.model';
 import { ImageDataService } from '../services/image-data.service';
+import { AuthenticationService } from '../services/authentication.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-image-detail',
@@ -20,21 +22,28 @@ export class ImageDetailComponent implements OnInit {
 
   private userKey: string; 
   private startTime: number;
-  private userViewData: any;
-  imageData: any;
+  private userViewData: UserViewData;
+  private user: Observable<firebase.User>;
+  private userEmail: string;
+  imageData: ImageViewData;
 
   constructor(
     private imageService: ImageService,
     private albumService: AlbumService,
     private dataService: ImageDataService,
     private contextMenu: ContextMenuService,
+    private authService: AuthenticationService,
     private route: ActivatedRoute) {
-    this.album = new Album('loading...');
+      this.album = new Album('loading...');
+      this.user = this.authService.authUser();
+      this.user.subscribe((user) => this.userEmail = user.email);
   }
 
   getImageUrl(imageKey: string, albumKey: string) {
     this.imageService.getImage(imageKey, albumKey).then(
       url => this.imageUrl = url);
+    this.imageData = { totalViews: 0 };
+    this.userViewData = {user: 'undefined', viewCount: 0, longestView: 0};
   }
 
   ngOnInit() {
@@ -51,15 +60,29 @@ export class ImageDetailComponent implements OnInit {
   }
 
   getImageData(imageKey: string) {
+    var imageData: any;
     this.dataService.getImageData(imageKey)
-      .then(data => this.imageData = data)
-      .catch()
-      .finally();
+      .then(data => imageData = data)
+      .catch(function (error) {
+        console.log("Error getting image view data:", error);
+      })
+      .finally(
+      () => {
+        this.imageData = imageData;
+        this.userViewData = this.findUserData(this.userEmail)
+        // increment views
+        this.imageData.totalViews += 1;
+        this.userViewData.viewCount += 1;
+      });
   }
 
   updateViewTime() {
     // total time equals current time minus start time
   }
 
-
+  findUserData(user: string) {
+    return this.imageData.userViews.filter(function (item) {
+        return item.user === user;
+    })[0] 
+  }
 }
