@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { ImageService } from '../services/image.service';
 import { AlbumService } from '../services/album.service';
 import { ContextMenuService } from '../services/context-menu.service';
@@ -16,10 +16,10 @@ import { Observable } from 'rxjs';
   templateUrl: './image-detail.component.html',
   styleUrls: ['./image-detail.component.scss']
 })
-export class ImageDetailComponent implements OnInit {
+export class ImageDetailComponent implements OnInit, OnDestroy {
+
   private imageUrl = '';
   private album: Album;
-
   private userKey: string; 
   private startTime: number;
   private userViewData: UserViewData;
@@ -59,6 +59,10 @@ export class ImageDetailComponent implements OnInit {
     this.getImageData(this.route.snapshot.params['id']);
   }
 
+  ngOnDestroy() {
+    console.log("page was destroyed");
+  }
+
   getImageData(imageKey: string) {
     var imageData: any;
     this.dataService.getImageData(imageKey)
@@ -70,9 +74,7 @@ export class ImageDetailComponent implements OnInit {
       () => {
         this.imageData = imageData;
         this.userViewData = this.findUserData(this.userEmail)
-        // increment views
-        this.imageData.totalViews += 1;
-        this.userViewData.viewCount += 1;
+        this.incrementViewCount();
       });
   }
 
@@ -80,9 +82,13 @@ export class ImageDetailComponent implements OnInit {
     // total time equals current time minus start time
   }
 
+  incrementViewCount() {
+    this.imageData.totalViews += 1;
+    this.userViewData.viewCount += 1;
+    this.dataService.updateImageData(this.imageData);
+  }
+
   findUserData(user: string) {
-    return this.imageData.userViews.filter(function (item) {
-        return item.user === user;
-    })[0] 
+    return this.imageData.userViews.find((item) => item.user === user)
   }
 }

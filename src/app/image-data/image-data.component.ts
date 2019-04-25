@@ -7,7 +7,7 @@ import { UserViewData } from '../models/userViewData.model';
   templateUrl: './image-data.component.html',
   styleUrls: ['./image-data.component.scss']
 })
-export class ImageDataComponent implements OnInit {
+export class ImageDataComponent implements OnInit{
 
   @Input() imageData: ImageViewData;
   viewData: UserViewData;
