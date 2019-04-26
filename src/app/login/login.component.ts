@@ -16,14 +16,12 @@ export class LoginComponent {
   constructor(private authService: AuthenticationService, private router: Router) { }
 
   signIn() {
-    this.authService.login(
-      { email: this.email, password: this.password }
-    ).then(
-      resolve => this.router.navigate(['gallery'])
-    ).catch(
-      error => this.errorMsg = error.msg
-    )
-
+    this.authService.login({ email: this.email, password: this.password })
+      .then(resolve => {
+        this.password = '';
+        this.router.navigate(['gallery']);
+      })
+      .catch(error => this.errorMsg = error.msg)
   }
 
 }
