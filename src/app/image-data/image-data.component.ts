@@ -11,6 +11,7 @@ export class ImageDataComponent implements OnInit{
 
   @Input() imageData: ImageViewData;
   viewData: UserViewData;
+  dateFormat = "yyyy/MM/dd HH:mm:ss";
 
   constructor() { }
 

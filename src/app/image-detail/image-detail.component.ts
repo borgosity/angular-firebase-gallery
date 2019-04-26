@@ -9,7 +9,7 @@ import { ImageViewData } from '../models/imageViewData.model';
 import { UserViewData } from '../models/userViewData.model';
 import { ImageDataService } from '../services/image-data.service';
 import { AuthenticationService } from '../services/authentication.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-image-detail',
@@ -21,7 +21,8 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
   private imageUrl = '';
   private album: Album;
   private userKey: string; 
-  private startTime: number;
+  private viewTime = 0;
+  private timerSub: Subscription;
   private userViewData: UserViewData;
   private user: Observable<firebase.User>;
   private userEmail: string;
@@ -43,10 +44,11 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
     this.imageService.getImage(imageKey, albumKey).then(
       url => this.imageUrl = url);
     this.imageData = { totalViews: 0 };
-    this.userViewData = {user: 'undefined', viewCount: 0, longestView: 0};
+    this.userViewData = {user: 'loading...', viewCount: 0, longestView: 0, recentView: 0, lastViewDate: 0, firstViewDate: 0};
   }
 
   ngOnInit() {
+    this.timerSub = timer(0, 1000).subscribe(t => this.viewTime = t);
     this.getImageUrl(this.route.snapshot.params['id'], this.route.snapshot.params['album']);
     this.albumService.getAlbum(this.route.snapshot.params['album']).then(
       album => {
@@ -55,12 +57,13 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
         }
       }
     );
-    // set start time
     this.getImageData(this.route.snapshot.params['id']);
   }
 
   ngOnDestroy() {
-    console.log("page was destroyed");
+    this.timerSub.unsubscribe();
+    this.updateViewTime(this.viewTime, this.userViewData.longestView);
+    this.dataService.updateImageData(this.imageData);
   }
 
   getImageData(imageKey: string) {
@@ -75,17 +78,26 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
         this.imageData = imageData;
         this.userViewData = this.findUserData(this.userEmail)
         this.incrementViewCount();
+        this.updateViewDate();
       });
   }
 
-  updateViewTime() {
-    // total time equals current time minus start time
+  updateViewTime(time: number, longestTime: number) {
+    this.userViewData.recentView = time;
+    this.userViewData.longestView = (time > longestTime) ? time : longestTime;
   }
 
   incrementViewCount() {
     this.imageData.totalViews += 1;
     this.userViewData.viewCount += 1;
     this.dataService.updateImageData(this.imageData);
+  }
+
+  updateViewDate() {
+    this.userViewData.lastViewDate = this.dataService.getCurrentDate();
+    if (!this.userViewData.firstViewDate) {
+      this.userViewData.firstViewDate = this.dataService.getCurrentDate();
+    }
   }
 
   findUserData(user: string) {

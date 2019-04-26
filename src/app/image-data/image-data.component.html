@@ -5,7 +5,10 @@
     <div *ngFor="let data of imageData.userViews">
       <p> User: {{data.user}}</p>
       <p> Views: {{data.viewCount}}</p>
-      <p> Longest: {{data.longestView}}</p>
+      <p> Longest Time: {{data.longestView}}</p>
+      <p> Recent Time: {{data.recentView}}</p>
+      <p> Last View: {{data.lastViewDate | date: dateFormat}}</p>
+      <p> First View: {{data.firstViewDate | date: dateFormat}}</p>
     </div>
   </div>
 </div>

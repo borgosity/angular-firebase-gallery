@@ -12,6 +12,7 @@ export class ImageDataService {
 
   private uid: string;
   private collectionName = 'imageData';
+  private dateNow: Date = new Date();
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {
     this.afAuth.authState.subscribe(auth => {
@@ -23,33 +24,21 @@ export class ImageDataService {
 
   addImageData(imageData: ImageViewData) {
     this.db.collection(this.collectionName).doc(imageData.$key).set(imageData)
-      .then(function (doc) {
-        console.log("Adding image view data: ", doc);
-      })
-      .catch(function (error) {
-        console.log("Error setting image view data:", error);
-      })
-      .finally( () => 
-        console.log("Finished adding image data")
-      );
+      .then()
+      .catch((error) =>  console.log("Error setting image view data:", error))
+      .finally();
   }
 
   updateImageData(imageData: ImageViewData) {
     this.db.collection(this.collectionName).doc(imageData.$key).update(imageData)
-      .then( () => 
-        console.log("Updating image view data: ")
-      )
-      .catch(function (error) {
-        console.log("Error getting image view data:", error);
-      })
-      .finally(() =>
-        console.log("Finished adding image data")
-      );
+      .then( )
+      .catch((error) => console.log("Error getting image view data:", error))
+      .finally( );
   }
 
   getImageData(dataKey: string) {
     return this.db.collection(this.collectionName).doc(dataKey).ref.get()
-      .then(function (doc) {
+      .then((doc) => {
         if (doc.exists) {
           return doc.data();
         }
@@ -57,8 +46,10 @@ export class ImageDataService {
           return 'undefined';
         }
       })
-      .catch(function (error) {
-        console.log("Error getting image view data:", error);
-      });
+      .catch((error) => console.log("Error getting image view data:", error));
+  }
+
+  getCurrentDate() {
+    return this.dateNow.getTime();
   }
 }
