@@ -76,13 +76,13 @@ export class AuthenticationService {
       this.db.collection(this.userCollection).doc(authData.uid).ref.get()
         .then(doc => {
           if (doc.data() && !doc.data().role) {
-            doc.ref.update(userData)
+            doc.ref.update(Object.assign({}, userData))
           }
           else if (!doc.data()) {
-            this.addUser(userData);
+            this.addUser(Object.assign({}, userData));
           }
           else {
-            this.getUser(authData);
+            this.getUser(Object.assign({}, userData));
           }
         }
         )

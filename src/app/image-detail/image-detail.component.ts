@@ -101,6 +101,11 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
   }
 
   findUserData(user: string) {
-    return this.imageData.userViews.find((item) => item.user === user)
+    if (this.imageData.userViews) {
+      return this.imageData.userViews.find((item) => item.user === user)
+    }
+    else {
+      return { user: user, viewCount: 0, longestView: 0, recentView: 0, lastViewDate: 0, firstViewDate: 0 };
+    }
   }
 }
