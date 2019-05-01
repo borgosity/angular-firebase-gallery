@@ -16,7 +16,7 @@ export class LoginComponent {
   constructor(private authService: AuthenticationService, private router: Router) { }
 
   signIn() {
-    this.authService.login({ email: this.email, password: this.password })
+    this.authService.login(this.email, this.password)
       .then(resolve => {
         this.password = '';
         this.router.navigate(['gallery']);

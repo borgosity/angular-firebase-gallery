@@ -1,5 +1,15 @@
+import { Roles } from './roles.model';
+
 export class User {
   uid?: string;
   email?: string;
-  password?: string;
+  photoURL?: string;
+  roles?: Roles;
+
+  constructor(authData) {
+    this.uid = authData.uid;
+    this.email = authData.email;
+    this.photoURL = authData.photoURL;
+    this.roles = { viewer: true };
+  }
 }
