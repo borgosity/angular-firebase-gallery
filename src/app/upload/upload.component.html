@@ -8,8 +8,15 @@
       <option value="addAlbum">Add Album</option>
     </select>
     <div class="form-horizontal padding" *ngIf="selectedAlbum == 'addAlbum'">
-      <input class="form-control" #albumName id="albumNames" value="" placeholder="New Photo Album Name" required/>
-      <button class="btn btn-primary padding" (click)="addAlbum(albumName.value)" [disabled]="selectedAlbum == ''">Add Album</button>
+      <input class="form-control" #albumName id="albumNames" value="" placeholder="New Photo Album Name" required />
+      <select class="form-control padding" id="privacy" #privacySelect required>
+        <option value="undefined" [selected]="selectedPrivacy == 'undefined'">Select Privacy</option>
+        <option value="0">Public</option>
+        <option value="1">Registered</option>
+        <option value="2">Private</option>
+        <option value="3">Admin</option>
+      </select>
+      <button class="btn btn-primary padding" (click)="addAlbum(albumName.value, privacySelect.value)" [disabled]="selectedAlbum == ''">Add Album</button>
     </div>
   </div>
   <div class="upload-form padding" *ngIf="selectedAlbum != 'addAlbum'">

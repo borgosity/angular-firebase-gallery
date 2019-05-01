@@ -56,8 +56,8 @@ export class UploadComponent implements OnInit, OnChanges {
     });
   }
 
-  addAlbum(name: any) {
-    this.albumService.addAlbum(new Album(name));
+  addAlbum(name: any, privacy: any) {
+    this.albumService.addAlbum(new Album(name, privacy));
     this.selectedAlbum = 'undefined';
   }
 

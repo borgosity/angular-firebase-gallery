@@ -5,6 +5,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import 'firebase/storage';
 import { Album } from '../models/album.model';
+import { AlbumRoles } from '../models/albumRoles.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,21 +42,28 @@ export class AlbumService {
   }
 
   getAlbums(): Observable<Album[]> {
-    return this.db.collection('albums').valueChanges();
+    return this.db.collection(this.collection).valueChanges();
   }
 
   getAlbum(key: string) {
-    return this.db.collection('albums').doc(key).ref.get()
+    return this.db.collection(this.collection).doc(key).ref.get()
       .then(function (doc) {
         if (doc.exists) {
           return doc.data();
         }
         else {
-          return new Album('undefined');
+          return new Album('undefined', AlbumRoles.admin);
         }
       })
       .catch(function (error) {
         console.log("Error getting album:", error);
       });
+  }
+
+  updateAlbumImageCount(albumKey: string, imageCount: number) {
+    this.db.collection(this.collection).doc(albumKey).update({size: imageCount})
+      .then()
+      .catch((error) => console.log("Error updating album image count data:", error))
+      .finally();
   }
 }

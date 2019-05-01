@@ -1,5 +1,5 @@
 export interface Roles {
   viewer: boolean;
-  submit?: boolean;
+  submitter?: boolean;
   admin?: boolean;
 }
