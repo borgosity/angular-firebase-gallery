@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
+  emailLogin: boolean = false;
+
   email: string;
   password: string;
   errorMsg: string;
@@ -22,6 +24,17 @@ export class LoginComponent {
         this.router.navigate(['gallery']);
       })
       .catch(error => this.errorMsg = error.msg)
+  }
+
+  googleSignIn() {
+    console.log("google sign in");
+    this.authService.googleLogin();
+  }
+
+  emailSignIn() {
+    console.log("email sign in");
+
+    this.emailLogin = !this.emailLogin;
   }
 
 }
