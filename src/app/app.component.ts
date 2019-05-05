@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 export class AppComponent {
 
   private contextMenuSub: Subscription;
-  private contextMenuOpen = false;
+  contextMenuOpen = false;
 
   constructor(private contextMenuService: ContextMenuService) {
      this.contextMenuSub = contextMenuService.contextMenuOpen.subscribe(open => this.contextMenuOpen = open );

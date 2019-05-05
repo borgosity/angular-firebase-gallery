@@ -19,15 +19,16 @@ import { AlbumRoles } from '../models/albumRoles.model';
 })
 export class ImageDetailComponent implements OnInit, OnDestroy {
 
-  private imageUrl = '';
-  private album: Album;
+  album: Album;
+  imageData: ImageViewData;
+  imageUrl = '';
+
   private userKey: string; 
   private viewTime = 0;
   private timerSub: Subscription;
   private userViewData: UserViewData;
   private user: Observable<firebase.User>;
   private userEmail: string;
-  imageData: ImageViewData;
 
   constructor(
     private imageService: ImageService,
