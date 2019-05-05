@@ -10,6 +10,7 @@ import { UserViewData } from '../models/userViewData.model';
 import { ImageDataService } from '../services/image-data.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { Observable, Subscription, timer } from 'rxjs';
+import { AlbumRoles } from '../models/albumRoles.model';
 
 @Component({
   selector: 'app-image-detail',
@@ -35,7 +36,7 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
     private contextMenu: ContextMenuService,
     private authService: AuthenticationService,
     private route: ActivatedRoute) {
-      this.album = new Album('loading...');
+      this.album = new Album('loading...', AlbumRoles.portfolio);
       this.user = this.authService.authUser();
       this.user.subscribe((user) => this.userEmail = user.email);
   }
