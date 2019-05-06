@@ -81,6 +81,7 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
         this.userViewData = this.findUserData(this.userEmail)
         this.incrementViewCount();
         this.updateViewDate();
+        this.dataService.updateImageData(this.imageData);
       });
   }
 
@@ -92,7 +93,6 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
   incrementViewCount() {
     this.imageData.totalViews += 1;
     this.userViewData.viewCount += 1;
-    this.dataService.updateImageData(this.imageData);
   }
 
   updateViewDate() {
@@ -103,11 +103,16 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
   }
 
   findUserData(user: string) {
-    if (this.imageData.userViews) {
-      return this.imageData.userViews.find((item) => item.user === user)
+    let userViewData: UserViewData = this.imageData.userViews.find((item) => item.user === user);
+    if (userViewData) {
+      console.log("found userViews:" + JSON.stringify(this.imageData) + ", " + user);
+      return userViewData;
     }
     else {
-      return { user: user, viewCount: 0, longestView: 0, recentView: 0, lastViewDate: 0, firstViewDate: 0 };
+      console.log("found NO userViews:");
+      userViewData = { user: user, viewCount: 0, longestView: 0, recentView: 0, lastViewDate: 0, firstViewDate: 0 };
+      this.imageData.userViews.push(userViewData);
+      return userViewData;
     }
   }
 }

@@ -2,7 +2,7 @@
   <div class="col-md-12 data-container">
     <p> Image ID: {{imageData.$key}}</p>
     <p> Views: {{imageData.totalViews}}</p>
-    <div *ngFor="let data of imageData.userViews">
+    <div class="user-data" *ngFor="let data of imageData.userViews">
       <p> User: {{data.user}}</p>
       <p> Views: {{data.viewCount}}</p>
       <p> Longest Time: {{data.longestView}}</p>
