@@ -4,11 +4,10 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs';
-import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { take } from 'rxjs/operators';
+import { _ } from 'rxjs';
 
 import { User } from '../models/user.model';
+import { Roles } from '../models/roles.model';
 
 
 
@@ -20,6 +19,7 @@ export class AuthenticationService {
   private fbUser: Observable<firebase.User>;
   private user: BehaviorSubject<User>;
   private userCollection: string = 'users';
+  private userRoles: Roles;
 
   constructor(private afAuth: AngularFireAuth , private db: AngularFirestore) {
     this.fbUser = this.afAuth.authState;
@@ -38,7 +38,8 @@ export class AuthenticationService {
           }
         }
         )
-        .catch(error => console.log("Error getting album:", error))
+        .catch(error => console.log("Error getting user:", error))
+        .finally(() => this.userRoles = this.user.getValue().roles);
     }
   }
 
@@ -86,6 +87,7 @@ export class AuthenticationService {
           }
         }
         )
+        .catch(error => console.log("Error updating user:", error));
     }
     else {
       this.addUser(userData);
@@ -101,6 +103,15 @@ export class AuthenticationService {
 
   private getUserCollection() {
     return this.db.collection(this.userCollection).ref;
+  }
+
+  get canView() : boolean {
+    const allowed = ['viewer', 'submitter', 'admin'];
+    return this.matchingRole(allowed);
+  }
+
+  private matchingRole(allowedRoles):boolean {
+    return !_.isEmpty(_.intersection(allowedRoles, this.userRoles));
   }
 
 }
