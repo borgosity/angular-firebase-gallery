@@ -28,7 +28,8 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
   private timerSub: Subscription;
   private userViewData: UserViewData;
   private user: Observable<firebase.User>;
-  private userEmail: string;
+  private userEmail: string = 'undefined';
+  private dataViewable: boolean = false;
 
   constructor(
     private imageService: ImageService,
@@ -39,7 +40,11 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute) {
       this.album = new Album('loading...', AlbumRoles.portfolio);
       this.user = this.authService.authUser();
-      this.user.subscribe((user) => this.userEmail = user.email);
+    this.user.subscribe((user) => {
+      if (user) {
+        this.userEmail = user.email
+      }
+    });
   }
 
   getImageUrl(imageKey: string, albumKey: string) {
@@ -59,6 +64,7 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.dataViewable = this.authService.canUpload();
     this.getImageData(this.route.snapshot.params['id']);
   }
 
@@ -102,14 +108,16 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  canViewData() {
+    return this.dataViewable;
+  }
+
   findUserData(user: string) {
     let userViewData: UserViewData = this.imageData.userViews.find((item) => item.user === user);
     if (userViewData) {
-      console.log("found userViews:" + JSON.stringify(this.imageData) + ", " + user);
       return userViewData;
     }
     else {
-      console.log("found NO userViews:");
       userViewData = { user: user, viewCount: 0, longestView: 0, recentView: 0, lastViewDate: 0, firstViewDate: 0 };
       this.imageData.userViews.push(userViewData);
       return userViewData;

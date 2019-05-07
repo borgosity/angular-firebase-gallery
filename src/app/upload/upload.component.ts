@@ -48,7 +48,6 @@ export class UploadComponent implements OnInit, OnChanges {
     const filesToUpload = this.files;
     const filesIdx = _.range(filesToUpload.length);
     _.each(filesIdx, (idx) => {
-      console.log("uploadFiles component: " + filesToUpload[idx]);
       this.upload = new Upload();
       this.upload.name = filesToUpload[idx].name;
       this.upload.collection = this.selectedAlbum;

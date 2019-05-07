@@ -19,4 +19,4 @@
     </span>
   </div>
 </div>
-<app-image-data [imageData]="imageData"></app-image-data>
+<app-image-data *ngIf="canViewData()" [imageData]="imageData"></app-image-data>

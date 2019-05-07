@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
-import { _ } from 'rxjs';
+import * as _ from 'lodash';
 
 import { User } from '../models/user.model';
 import { Roles } from '../models/roles.model';
+import { map } from 'rxjs/operators';
 
 
 
@@ -19,11 +20,11 @@ export class AuthenticationService {
   private fbUser: Observable<firebase.User>;
   private user: BehaviorSubject<User>;
   private userCollection: string = 'users';
-  private userRoles: Roles;
+  private userRoles: Array<string>;
 
   constructor(private afAuth: AngularFireAuth , private db: AngularFirestore) {
     this.fbUser = this.afAuth.authState;
-    this.getUser(this.fbUser);
+    this.fbUser.subscribe((user) => this.getUser(user)); 
   }
 
   private getUser(auth) {
@@ -36,10 +37,15 @@ export class AuthenticationService {
           else {
             this.user = new BehaviorSubject({ email: 'undefined', photoURL: 'undefined' });
           }
-        }
-        )
+        })
         .catch(error => console.log("Error getting user:", error))
-        .finally(() => this.userRoles = this.user.getValue().roles);
+        .finally(() => {
+          this.userRoles = _.keys(_.get(this.user.getValue(), 'roles'));
+          console.log(this.userRoles);
+        });
+    }
+    else {
+      console.log("no authId: " + auth);
     }
   }
 
@@ -85,8 +91,7 @@ export class AuthenticationService {
           else {
             this.getUser(Object.assign({}, userData));
           }
-        }
-        )
+        })
         .catch(error => console.log("Error updating user:", error));
     }
     else {
@@ -105,12 +110,23 @@ export class AuthenticationService {
     return this.db.collection(this.userCollection).ref;
   }
 
-  get canView() : boolean {
+  canView() : boolean {
     const allowed = ['viewer', 'submitter', 'admin'];
     return this.matchingRole(allowed);
   }
 
-  private matchingRole(allowedRoles):boolean {
+  canSubmit(): boolean {
+    const allowed = ['submitter', 'admin'];
+    return this.matchingRole(allowed);
+  }
+
+  canUpload(): boolean {
+    const allowed = ['admin'];
+    return this.matchingRole(allowed);
+  }
+
+  private matchingRole(allowedRoles): boolean {
+    console.log("user roles: " + this.userRoles + ", "+ _.intersection(allowedRoles, this.userRoles))
     return !_.isEmpty(_.intersection(allowedRoles, this.userRoles));
   }
 
