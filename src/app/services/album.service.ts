@@ -45,6 +45,10 @@ export class AlbumService {
     return this.db.collection(this.collection).valueChanges();
   }
 
+  getOpenAlbums(): Observable<Album[]> {
+    return this.db.collection(this.collection, ref => ref.where('role', '==', '0')).valueChanges();
+  }
+
   getAlbum(key: string) {
     return this.db.collection(this.collection).doc(key).ref.get()
       .then(function (doc) {
