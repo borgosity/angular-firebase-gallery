@@ -6,52 +6,52 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import 'firebase/storage';
 import { Album } from '../models/album.model';
 import { AlbumRoles } from '../models/albumRoles.model';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlbumService {
-  private uid: string;
+
   private collection = 'albums';
 
-  constructor(
-    private ngFire: AngularFireModule,
-    private afAuth: AngularFireAuth,
-    private db: AngularFirestore) {
-    this.afAuth.authState.subscribe(auth => {
-      if (auth !== undefined && auth !== null) {
-        this.uid = auth.uid;
-      }
-    });
+  constructor(private authService: AuthenticationService, private db: AngularFirestore) {
+
   }
 
   addAlbum(album: Album) {
     const filePath = "/" + this.collection + "/" + album.name;
-    console.log("add album: " + filePath);
-
     const db = this.db;
 
     db.collection(this.collection).add(Object.assign({}, album))
-      .then(function (docRef) {
-        console.log("Album written with ID: ", docRef.id);
-        docRef.update({ $key: docRef.id});
+      .then((docRef) => docRef.update({ $key: docRef.id}))
+      .catch((error) => console.error("Error adding album document: ", error));
+  }
+
+  albumAccessible(albumId: string) {
+    return this.getAlbum(albumId)
+      .then(doc => {
+        if (doc) {
+          return (doc.role == 'guest' || this.authService.canView());
+        }
+        else {
+          return false;
+        }
       })
-      .catch(function (error) {
-        console.error("Error adding album document: ", error);
-      });
+      .catch((error) => console.log("Error checking album access:", error));
   }
 
   getAlbums(): Observable<Album[]> {
     return this.db.collection(this.collection).valueChanges();
   }
 
-  getOpenAlbums(): Observable<Album[]> {
-    return this.db.collection(this.collection, ref => ref.where('role', '==', '0')).valueChanges();
+  getGuestAlbums(): Observable<Album[]> {
+    return this.db.collection(this.collection, ref => ref.where('role', '==', 'guest')).valueChanges();
   }
 
   getAlbum(key: string) {
     return this.db.collection(this.collection).doc(key).ref.get()
-      .then(function (doc) {
+      .then((doc) => {
         if (doc.exists) {
           return doc.data();
         }
@@ -59,9 +59,7 @@ export class AlbumService {
           return new Album('undefined', AlbumRoles.admin);
         }
       })
-      .catch(function (error) {
-        console.log("Error getting album:", error);
-      });
+      .catch((error) => console.log("Error getting album:", error));
   }
 
   updateAlbumImageCount(albumKey: string, imageCount: number) {

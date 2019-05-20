@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { ImageService } from '../services/image.service';
 import { AlbumService } from '../services/album.service';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { GalleryImage } from '../models/galleryImage.model';
 import { Observable } from 'rxjs';
 
@@ -15,16 +15,36 @@ export class AlbumComponent implements OnInit {
   key: string;
   images: Observable<GalleryImage[]>;
 
-  constructor(private imageService: ImageService, private albumService: AlbumService, private route: ActivatedRoute) { }
+  constructor(
+    private imageService: ImageService,
+    private albumService: AlbumService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.title = this.route.snapshot.params['name'] + ' Photos';
-    this.key = this.route.snapshot.params['id'];
-    this.getAlbumImages(this.route.snapshot.params['id']);
+    this.albumService.albumAccessible(this.route.snapshot.params['id'])
+      .then((canOpen) => {
+        if (canOpen) {
+          this.title = this.route.snapshot.params['name'] + ' Photos';
+          this.key = this.route.snapshot.params['id'];
+          this.getAlbumImages(this.route.snapshot.params['id']);
+        }
+        else {
+          this.router.navigate([`login`]);
+        }
+      });
   }
 
   ngOnChanges() {
-    this.getAlbumImages(this.route.snapshot.params['id']);
+    this.albumService.albumAccessible(this.route.snapshot.params['id'])
+      .then((canOpen) => {
+        if (canOpen) {
+          this.getAlbumImages(this.route.snapshot.params['id']);
+        }
+        else {
+          this.router.navigate([`login`]);
+        }
+      });
   }
 
   getAlbumImages(key: string) {

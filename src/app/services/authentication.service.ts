@@ -28,7 +28,7 @@ export class AuthenticationService {
   }
 
   private getUser(auth) {
-    if (auth.uid) {
+    if (auth) {
       this.db.collection(this.userCollection).doc(auth.uid).ref.get()
         .then((doc) => {
           if (doc.exists) {
@@ -43,9 +43,6 @@ export class AuthenticationService {
           this.userRoles = _.keys(_.get(this.user.getValue(), 'roles'));
           console.log(this.userRoles);
         });
-    }
-    else {
-      console.log("no authId: " + auth);
     }
   }
 

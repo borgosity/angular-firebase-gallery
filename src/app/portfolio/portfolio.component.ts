@@ -17,11 +17,11 @@ export class PortfolioComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.albums = this.albumService.getOpenAlbums();
+    this.albums = this.albumService.getGuestAlbums();
   }
 
   ngOnChanges() {
-    this.albums = this.albumService.getOpenAlbums();
+    this.albums = this.albumService.getGuestAlbums();
   }
 
 }
