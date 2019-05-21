@@ -1,6 +1,6 @@
 export enum AlbumRoles {
-  portfolio = 0,
+  guest = 0,
   viewer = 1,
-  submitter = 2,
+  subscriber = 2,
   admin = 3
 }

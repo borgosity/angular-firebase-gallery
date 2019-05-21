@@ -22,6 +22,14 @@ export class AlbumComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.albumAccessible();
+  }
+
+  ngOnChanges() {
+    this.albumAccessible();
+  }
+
+  private albumAccessible() {
     this.albumService.albumAccessible(this.route.snapshot.params['id'])
       .then((canOpen) => {
         if (canOpen) {
@@ -30,24 +38,13 @@ export class AlbumComponent implements OnInit {
           this.getAlbumImages(this.route.snapshot.params['id']);
         }
         else {
-          this.router.navigate([`login`]);
+          this.router.navigate(['login']);
         }
-      });
+      })
+      .catch(error => console.log("Error getting album accessibility: ", error));
   }
 
-  ngOnChanges() {
-    this.albumService.albumAccessible(this.route.snapshot.params['id'])
-      .then((canOpen) => {
-        if (canOpen) {
-          this.getAlbumImages(this.route.snapshot.params['id']);
-        }
-        else {
-          this.router.navigate([`login`]);
-        }
-      });
-  }
-
-  getAlbumImages(key: string) {
+  private getAlbumImages(key: string) {
     this.images = this.imageService.getImages(key);
     this.images.subscribe(data => {
       this.albumService.updateAlbumImageCount(this.route.snapshot.params['id'], data.length);

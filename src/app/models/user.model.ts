@@ -10,6 +10,6 @@ export class User {
     this.uid = authData.uid;
     this.email = authData.email;
     this.photoURL = authData.photoURL;
-    this.roles = { viewer: true };
+    this.roles = authData.uid ? { viewer: true } : { guest: true };
   }
 }

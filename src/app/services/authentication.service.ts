@@ -24,7 +24,7 @@ export class AuthenticationService {
 
   constructor(private afAuth: AngularFireAuth , private db: AngularFirestore) {
     this.fbUser = this.afAuth.authState;
-    this.fbUser.subscribe((user) => this.getUser(user)); 
+    this.fbUser.subscribe((user) => this.getUser(user));
   }
 
   private getUser(auth) {
@@ -32,10 +32,10 @@ export class AuthenticationService {
       this.db.collection(this.userCollection).doc(auth.uid).ref.get()
         .then((doc) => {
           if (doc.exists) {
-            this.user = new BehaviorSubject(doc.data());
+            this.user = new BehaviorSubject<User>(doc.data());
           }
           else {
-            this.user = new BehaviorSubject({ email: 'undefined', photoURL: 'undefined' });
+            this.setUserAsGuest();
           }
         })
         .catch(error => console.log("Error getting user:", error))
@@ -43,6 +43,10 @@ export class AuthenticationService {
           this.userRoles = _.keys(_.get(this.user.getValue(), 'roles'));
           console.log(this.userRoles);
         });
+    }
+    else {
+      console.log("no auth when getting user...");
+      this.setUserAsGuest();
     }
   }
 
@@ -71,6 +75,10 @@ export class AuthenticationService {
 
   getUserAccount() {
     return this.user;
+  }
+
+  private setUserAsGuest() {
+    this.user = new BehaviorSubject<User>({ email: 'guest@guest.com', photoURL: 'undefined' });
   }
 
   private updateUser(authData) {
@@ -105,6 +113,11 @@ export class AuthenticationService {
 
   private getUserCollection() {
     return this.db.collection(this.userCollection).ref;
+  }
+
+  isGuest(): boolean {
+    const allowed = ['guest'];
+    return this.matchingRole(allowed);
   }
 
   canView() : boolean {
