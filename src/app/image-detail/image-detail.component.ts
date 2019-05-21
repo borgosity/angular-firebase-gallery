@@ -41,8 +41,8 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private router: Router,
     private route: ActivatedRoute) {
-      this.album = new Album('loading...', AlbumRoles.guest);
-      this.user = this.authService.getUserAccount().subscribe(user => this.userEmail = user.email);
+    this.album = new Album('loading...', AlbumRoles.guest);
+    this.imageData = { totalViews: 0, userViews: [{}] };
   }
 
   ngOnInit() {
@@ -58,15 +58,12 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
   }
 
   private imageAccessible() {
-    console.log("imageAccessible?");
     this.albumService.albumAccessible(this.route.snapshot.params['album'])
       .then((canOpen) => {
         if (canOpen) {
-          console.log("init");
           this.init();
         }
         else {
-          console.log("redirect");
           this.router.navigate(['login']);
         }
       })
@@ -84,6 +81,7 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
       }
     );
     this.dataViewable = this.authService.canUpload();
+    this.user = this.authService.getUserAccount().subscribe(user => this.userEmail = user.email);
     this.getImageData(this.route.snapshot.params['id']);
     this.isInit = true;
   }
@@ -102,10 +100,15 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
       .finally(
       () => {
         this.imageData = imageData;
-        this.userViewData = this.findUserData(this.userEmail)
-        this.incrementViewCount();
-        this.updateViewDate();
-        this.dataService.updateImageData(this.imageData);
+        if (this.imageData) {
+          this.userViewData = this.findUserData(this.userEmail)
+          this.incrementViewCount();
+          this.updateViewDate();
+          this.dataService.updateImageData(this.imageData);
+        }
+        else {
+          this.imageData = { totalViews: 0, userViews: [{}] }
+        }
       });
   }
 

@@ -45,8 +45,9 @@ export class AuthenticationService {
         });
     }
     else {
-      console.log("no auth when getting user...");
-      this.setUserAsGuest();
+      console.log("user is guest!");
+      this.getUser({ uid: 'p8PPj4flEr4bkVNuTipM' });
+      //this.setUserAsGuest();
     }
   }
 
@@ -74,11 +75,15 @@ export class AuthenticationService {
   }
 
   getUserAccount() {
+    if (!this.user) {
+      this.setUserAsGuest();
+    }
     return this.user;
   }
 
   private setUserAsGuest() {
-    this.user = new BehaviorSubject<User>({ email: 'guest@guest.com', photoURL: 'undefined' });
+    this.userRoles = ['guest'];
+    this.user = new BehaviorSubject<User>({ email: 'guest@borgosity.dev', photoURL: 'undefined' });
   }
 
   private updateUser(authData) {

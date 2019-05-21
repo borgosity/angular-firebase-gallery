@@ -40,10 +40,12 @@ export class ImageDataService {
     return this.db.collection(this.collectionName).doc(dataKey).ref.get()
       .then((doc) => {
         if (doc.exists) {
+          console.log("image data exists: " + doc.data());
           return doc.data();
         }
         else {
-          return 'undefined';
+          console.log("image data not available: ");
+          return { totalViews: 0, userViews: [{}] };
         }
       })
       .catch((error) => console.log("Error getting image view data:", error));
