@@ -9,6 +9,7 @@ import { finalize, switchMap } from 'rxjs/operators';
 import { ImageDataService } from './image-data.service';
 import { AuthenticationService } from './authentication.service';
 import { ImageViewData } from '../models/imageViewData.model';
+import { AlbumRoles } from '../models/albumRoles.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class UploadService {
   private uploads: AngularFirestoreCollection<GalleryImage>;
   private user: Observable<firebase.User>;
   private userEmail: string;
+  private uid: string;
 
   uploadPercent: Observable<number>;
 
@@ -29,14 +31,19 @@ export class UploadService {
     private authService: AuthenticationService) {
 
     this.user = this.authService.authUser();
-    this.user.subscribe((user) => this.userEmail = user.email);
+    this.user.subscribe((user) => {
+      if (user) {
+        this.userEmail = user.email;
+        this.uid = user.uid;
+      }
+    });
   }
 
-
-  uploadFile(upload: Upload, file: File) {
+  uploadFile(upload: Upload, privacy: string, file: File) {
     console.log(file);
 
-    const filePath = "/" + upload.collection + "/" + file.name;
+    const filePath = "/images/" + privacy + "/" + this.uid + "/" + upload.collection + "/" + file.name;
+
     const db = this.db;
     const storageRef = this.storage.ref(filePath);
     const uploadTask = this.storage.upload(filePath, file);

@@ -2,27 +2,27 @@
   <h2 class="heading">Upload New Photos</h2>
   <div class="upload-form padding" >
     <label class="form-inline padding" for="albums"> Album: </label>
-    <select class="form-control padding" id="albums" #albumSelect required (change)="selectChangeHandler($event)">
-      <option value="undefined" [selected]="selectedAlbum == 'undefined'">Select Album</option>
-      <option value="{{album.$key}}" *ngFor="let album of albums | async">{{album.name}}</option>
+    <select class="form-control padding" id="albums" #albumSelect required [(ngModel)]="selectedAlbum" (change)="selectChangeHandler($event)">
+      <option value="undefined" [selected]="albumId == 'undefined'">Select Album</option>
+      <option [ngValue]="album" *ngFor="let album of albums | async">{{album.name}}</option>
       <option value="addAlbum">Add Album</option>
     </select>
-    <div class="form-horizontal padding" *ngIf="selectedAlbum == 'addAlbum'">
+    <div class="form-horizontal padding" *ngIf="albumId == 'addAlbum'">
       <input class="form-control" #albumName id="albumNames" value="" placeholder="New Photo Album Name" required />
       <select class="form-control padding" id="privacy" #privacySelect required>
         <option value="undefined" [selected]="selectedPrivacy == 'undefined'">Select Privacy</option>
         <option value="0">Public</option>
-        <option value="1">Registered</option>
-        <option value="2">Private</option>
+        <option value="1">Viewer</option>
+        <option value="2">Subscriber</option>
         <option value="3">Admin</option>
       </select>
-      <button class="btn btn-primary padding" (click)="addAlbum(albumName.value, privacySelect.value)" [disabled]="selectedAlbum == ''">Add Album</button>
+      <button class="btn btn-primary padding" (click)="addAlbum(albumName.value, privacySelect.value)" [disabled]="albumId == ''">Add Album</button>
     </div>
   </div>
-  <div class="upload-form padding" *ngIf="selectedAlbum != 'addAlbum'">
+  <div class="upload-form padding" ([ngModel])="selected" *ngIf="selected">
     <div class="form-group padding" >
       <label class="form-inline" for="browse"> Select Photos: </label>
-      <input class="form-control-file" id="browse" type="file" (change)="handleFiles($event)" multiple [disabled]="selectedAlbum == 'undefined' || selectedAlbum == 'addAlbum'"/>
+      <input class="form-control-file" id="browse" type="file" (change)="handleFiles($event)" multiple [disabled]="albumId == 'undefined' || albumId == 'addAlbum'"/>
     </div>
     <div class="form-horizontal padding">
       <button class="btn btn-primary" (click)="uploadFiles()" [disabled]="upload || !files">Upload Images</button>

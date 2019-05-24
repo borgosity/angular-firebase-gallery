@@ -19,7 +19,10 @@ export class UploadComponent implements OnInit, OnChanges {
   albumKey = '';
   upload: Upload;
   albums: Observable<Album[]>;
-  selectedAlbum = 'undefined';
+  albumId = 'undefined';
+  selectedAlbum: Album;
+  selected: boolean = false;
+  private privacy: number = 0;
  
 
   constructor(
@@ -28,11 +31,11 @@ export class UploadComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.albums = this.albumService.getAlbums();
+    this.albums = this.albumService.getAllAlbums();
   }
 
   ngOnChanges() {
-    this.albums = this.albumService.getAlbums();
+    this.albums = this.albumService.getAllAlbums();
   }
 
   handleFiles(event) {
@@ -41,7 +44,15 @@ export class UploadComponent implements OnInit, OnChanges {
   }
 
   selectChangeHandler(event: any) {
-    this.selectedAlbum = event.target.value;
+    if (event.target.value == 'undefined' || event.target.value == 'addAlbum') {
+      this.albumId = event.target.value;
+      this.selected = false;
+    }
+    else {
+      this.albumId = this.selectedAlbum.name;
+      this.selected = true;
+    }
+    console.log(this.albumId);
   }
 
   uploadFiles() {
@@ -50,14 +61,19 @@ export class UploadComponent implements OnInit, OnChanges {
     _.each(filesIdx, (idx) => {
       this.upload = new Upload();
       this.upload.name = filesToUpload[idx].name;
-      this.upload.collection = this.selectedAlbum;
-      this.uploadService.uploadFile(this.upload, filesToUpload[idx]);
+      this.upload.collection = this.selectedAlbum.$key;
+      this.uploadService.uploadFile(this.upload, this.selectedAlbum.role, filesToUpload[idx]);
     });
+    this.updateImageCount(this.upload.collection, filesIdx);
+  }
+
+  private updateImageCount(albumKey: string, imageCount: number) {
+    this.albumService.updateAlbumImageCount(albumKey, imageCount);
   }
 
   addAlbum(name: any, privacy: any) {
     this.albumService.addAlbum(new Album(name, privacy));
-    this.selectedAlbum = 'undefined';
+    this.albumId = 'undefined';
   }
 
   compareFn(c1: any, c2: any): boolean {
