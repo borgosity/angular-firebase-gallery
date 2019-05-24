@@ -52,6 +52,8 @@ export class AuthenticationService {
   }
 
   login(email: string, password: string) {
+    console.log("login");
+
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then(credential => {
         this.updateUser(credential.user)
@@ -92,7 +94,7 @@ export class AuthenticationService {
     if (ref) {
       this.db.collection(this.userCollection).doc(authData.uid).ref.get()
         .then(doc => {
-          if (doc.data() && !doc.data().role) {
+          if (doc.data() && !doc.data().roles) {
             doc.ref.update(Object.assign({}, userData))
           }
           else if (!doc.data()) {
@@ -107,6 +109,7 @@ export class AuthenticationService {
     else {
       this.addUser(userData);
     }
+
   }
 
   private addUser(userData) {
@@ -140,8 +143,12 @@ export class AuthenticationService {
     return this.matchingRole(allowed);
   }
 
+  hasRole(role: string[]): boolean {
+    return this.matchingRole(role);
+  }
+
   private matchingRole(allowedRoles): boolean {
-    console.log("user roles: " + this.userRoles + ", "+ _.intersection(allowedRoles, this.userRoles))
+    //console.log("user roles: " + this.userRoles + ", allowed roles: "+ allowedRoles)
     return !_.isEmpty(_.intersection(allowedRoles, this.userRoles));
   }
 

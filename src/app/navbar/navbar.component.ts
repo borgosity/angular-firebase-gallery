@@ -19,6 +19,18 @@ export class NavbarComponent implements OnInit {
     this.user = this.authService.authUser();
   }
 
+  isGeneral(): boolean {
+    return this.authService.canView();
+  }
+
+  isSubscriber(): boolean {
+    return this.authService.canSubmit();
+  }
+
+  isAdmin() {
+    return this.authService.canUpload();
+  }
+
   logOut() {
     this.authService.logout().then(onResolve => this.router.navigate['/']);
   }

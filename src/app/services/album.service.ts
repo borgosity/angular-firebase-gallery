@@ -32,7 +32,7 @@ export class AlbumService {
     return this.getAlbum(albumId)
       .then(doc => {
         if (doc) {
-          return (doc.role == 'guest' || this.authService.canView());
+          return (doc.role == 'guest' || this.authService.hasRole([doc.role]));
         }
         else {
           return false;
@@ -41,7 +41,15 @@ export class AlbumService {
       .catch((error) => console.log("Error checking album access:", error));
   }
 
-  getAlbums(): Observable<Album[]> {
+  galleryAccessible(galleryId: string) {
+    return this.authService.hasRole([galleryId]);
+  }
+
+  getAlbums(role: string): Observable<Album[]> {
+    return this.db.collection(this.collection, ref => ref.where('role', '==', role)).valueChanges();
+  }
+
+  getAllAlbums(): Observable<Album[]> {
     return this.db.collection(this.collection).valueChanges();
   }
 
@@ -56,16 +64,27 @@ export class AlbumService {
           return doc.data();
         }
         else {
-          return new Album('undefined', AlbumRoles.admin);
+          return new Album('undefined', AlbumRoles.guest);
         }
       })
       .catch((error) => console.log("Error getting album:", error));
   }
 
   updateAlbumImageCount(albumKey: string, imageCount: number) {
-    this.db.collection(this.collection).doc(albumKey).update({size: imageCount})
-      .then()
-      .catch((error) => console.log("Error updating album image count data:", error))
-      .finally();
+    let newCount: number = imageCount;
+    this.getAlbum(albumKey)
+      .then(data => {
+        if (data) {
+          let currentCount = +data.size;
+          newCount = newCount + currentCount;
+        }
+      })
+      .catch(error => console.log("Error getting album data for update:", error))
+      .finally(() => {
+        this.db.collection(this.collection).doc(albumKey).update({size: newCount})
+          .then()
+          .catch(error => console.log("Error updating album image count data:", error))
+          .finally();
+      });
   }
 }

@@ -46,8 +46,6 @@ export class AlbumComponent implements OnInit {
 
   private getAlbumImages(key: string) {
     this.images = this.imageService.getImages(key);
-    this.images.subscribe(data => {
-      this.albumService.updateAlbumImageCount(this.route.snapshot.params['id'], data.length);
-    });
+    this.images.subscribe();
   }
 }

@@ -5,13 +5,14 @@ export class Album {
   name?: string;
   size?: number;
   color?: string;
-  role?: AlbumRoles;
+  role?: string;
 
   constructor(name : string, privacy : AlbumRoles) {
     this.$key = '0000000000000000000000000000000000000';
     this.name = name;
     this.color = 'hsl(' + (Math.random() * 360) + ', 50%, 50%)';
     this.size = 0;
-    this.role = privacy;
+    console.log("privacy level: " + AlbumRoles[privacy]);
+    this.role = AlbumRoles[privacy];
   }
 }

@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: "album/:name/:id", component: AlbumComponent},
   { path: "image/:album/:id", component: ImageDetailComponent},
   { path: "upload", component: UploadComponent, canActivate: [AuthenticationGuardService] },
-  { path: "gallery", component: GalleryComponent, canActivate: [AuthenticationGuardService] },
+  { path: "gallery/:type/:name", component: GalleryComponent, canActivate: [AuthenticationGuardService] },
   { path: "", redirectTo: "/portfolio", pathMatch: 'full' },
   { path: "login", component: LoginComponent }
 ];
