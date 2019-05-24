@@ -15,7 +15,11 @@ export class LoginComponent {
   password: string;
   errorMsg: string;
 
-  constructor(private ngZone: NgZone, private authService: AuthenticationService, private router: Router) { }
+  constructor(private ngZone: NgZone, private authService: AuthenticationService, private router: Router) {
+    if (authService.authUser) {
+      this.navigate(['portfolio']);
+    }
+  }
 
   signIn() {
     this.authService.login(this.email, this.password)
