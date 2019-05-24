@@ -12,7 +12,6 @@ export class Album {
     this.name = name;
     this.color = 'hsl(' + (Math.random() * 360) + ', 50%, 50%)';
     this.size = 0;
-    console.log("privacy level: " + AlbumRoles[privacy]);
     this.role = AlbumRoles[privacy];
   }
 }

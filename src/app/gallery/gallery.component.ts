@@ -32,14 +32,11 @@ export class GalleryComponent implements OnInit, OnChanges{
   }
 
   private galleryAccessible() {
-    console.log(AlbumRoles[this.route.snapshot.params['type']]);
     if (this.albumService.galleryAccessible(AlbumRoles[this.route.snapshot.params['type']])) {
-      console.log("can get albums");
       this.title = this.route.snapshot.params['name'] + ' Albums';
       this.getAlbums();
     }
     else {
-      console.log("ca NOT get albums");
       this.router.navigate(['portfolio']);
     }
   }

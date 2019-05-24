@@ -21,7 +21,7 @@ export class LoginComponent {
     this.authService.login(this.email, this.password)
       .then(resolve => {
         this.password = '';
-        this.navigate(['gallery']);
+        this.navigate(['portfolio']);
       })
       .catch(error => this.errorMsg = error.msg);
   }
@@ -29,7 +29,7 @@ export class LoginComponent {
   googleSignIn() {
     console.log("google sign in");
     this.authService.googleLogin()
-      .then(() => this.navigate(['gallery']))
+      .then(() => this.navigate(['portfolio']))
       .catch(error => this.errorMsg = error.msg);
   }
 
