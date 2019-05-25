@@ -16,9 +16,11 @@ export class LoginComponent {
   errorMsg: string;
 
   constructor(private ngZone: NgZone, private authService: AuthenticationService, private router: Router) {
-    if (authService.authUser) {
-      this.navigate(['portfolio']);
-    }
+    authService.authUser().subscribe(user => {
+      if (user) {
+        this.navigate(['portfolio'])
+      }
+    });
   }
 
   signIn() {

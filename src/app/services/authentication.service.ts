@@ -72,7 +72,7 @@ export class AuthenticationService {
     return this.afAuth.auth.signOut();
   }
 
-  authUser() {
+  authUser() : Observable<firebase.User> {
     return this.fbUser;
   }
 
