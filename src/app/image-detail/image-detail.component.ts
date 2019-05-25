@@ -57,6 +57,10 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  canViewData() {
+    return this.dataViewable;
+  }
+
   private imageAccessible() {
     this.albumService.albumAccessible(this.route.snapshot.params['album'])
       .then((canOpen) => {
@@ -129,9 +133,6 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  private canViewData() {
-    return this.dataViewable;
-  }
 
   private findUserData(user: string) {
     let userViewData: UserViewData = this.imageData.userViews.find((item) => item.user === user);
