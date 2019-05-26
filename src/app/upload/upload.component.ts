@@ -64,7 +64,7 @@ export class UploadComponent implements OnInit, OnChanges {
       this.upload.collection = this.selectedAlbum.$key;
       this.uploadService.uploadFile(this.upload, this.selectedAlbum.role, filesToUpload[idx]);
     });
-    this.updateImageCount(this.upload.collection, filesIdx);
+    this.updateImageCount(this.upload.collection, filesToUpload.length);
   }
 
   private updateImageCount(albumKey: string, imageCount: number) {

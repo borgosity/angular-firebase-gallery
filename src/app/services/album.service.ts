@@ -75,8 +75,7 @@ export class AlbumService {
     this.getAlbum(albumKey)
       .then(data => {
         if (data) {
-          let currentCount = +data.size;
-          newCount = newCount + currentCount;
+          newCount += data.size;
         }
       })
       .catch(error => console.log("Error getting album data for update:", error))
