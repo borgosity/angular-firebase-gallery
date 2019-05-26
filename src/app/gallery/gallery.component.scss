@@ -3,8 +3,11 @@ ul{
   width: 1200px;
   margin: auto;
 }
-li{
+li {
   display: inline-flex;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .album-tn {
   margin: 6px;

@@ -6,6 +6,9 @@ ul {
 
 li {
   display: inline;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .tn {

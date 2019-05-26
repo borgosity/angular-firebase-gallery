@@ -6,6 +6,9 @@ ul {
 
 li {
   display: inline-flex;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .album-tn {
