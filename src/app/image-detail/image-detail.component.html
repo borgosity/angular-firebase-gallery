@@ -8,7 +8,7 @@
 <div class="row">
   <div class="col-md-12">
       <div class="img-bg">
-        <img src="{{imageUrl}}" class="img-container" appOnlyImgClick oncontextmenu="return false"/>
+        <img src="{{imageUrl}}" class="img-container" appOnlyImgClick [name]="imageObject.collection" [id]="imageObject.$key"  oncontextmenu="return false"/>
       </div>
   </div>
 </div>

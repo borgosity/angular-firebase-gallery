@@ -12,6 +12,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { Observable, Subscription, timer } from 'rxjs';
 import { AlbumRoles } from '../models/albumRoles.model';
 import { User } from '../models/user.model';
+import { GalleryImage } from '../models/galleryImage.model';
 
 @Component({
   selector: 'app-image-detail',
@@ -23,6 +24,7 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
   album: Album;
   imageData: ImageViewData;
   imageUrl = '';
+  imageObject: GalleryImage = {$key: 'loading...'};
 
   private userKey: string; 
   private viewTime = 0;
@@ -91,7 +93,12 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
   }
 
   private getImageUrl(imageKey: string, albumKey: string) {
-    this.imageService.getImage(imageKey, albumKey).then(url => this.imageUrl = url);
+    this.imageService.getImage(imageKey, albumKey).then(image => {
+      if (image) {
+        this.imageObject = image; 
+        this.imageUrl = image.url;
+      }
+    });
     this.imageData = { totalViews: 0 };
     this.userViewData = {user: 'loading...', viewCount: 0, longestView: 0, recentView: 0, lastViewDate: 0, firstViewDate: 0};
   }
@@ -132,7 +139,6 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
       this.userViewData.firstViewDate = this.dataService.getCurrentDate();
     }
   }
-
 
   private findUserData(user: string) {
     let userViewData: UserViewData = this.imageData.userViews.find((item) => item.user === user);

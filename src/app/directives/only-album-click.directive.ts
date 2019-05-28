@@ -1,6 +1,7 @@
 import { Directive, HostListener } from '@angular/core';
 import { ContextMenuService } from '../services/context-menu.service';
 import { ContextMenuType } from '../models/contextMenuType.model';
+import { ContextMenuData } from '../models/contextMenuData.model';
 
 @Directive({
   selector: '[appOnlyAlbumClick]'
@@ -17,7 +18,7 @@ export class OnlyAlbumClickDirective {
   }
 
   @HostListener('contextmenu', ['$event']) onRightClick(event: any) {
-    this.contextMenuService.openContextMenu(event, ContextMenuType.Album);
+    this.contextMenuService.openContextMenu(new ContextMenuData(event, event.target.id));
     console.log('album only RIGHT click directive');
   }
 
