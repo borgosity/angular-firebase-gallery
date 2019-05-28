@@ -41,4 +41,11 @@ export class ImageService {
         console.log("Error getting image:", error);
       });
   }
+
+  deleteImage(imageKey: string, albumKey: string) {
+    this.currentAlbum = albumKey;
+    return this.db.collection(albumKey).doc(imageKey).delete()
+      .then(() => console.log("Image deleteed successfully"))
+      .catch(error => console.log("Error getting image:", error));
+  }
 }
