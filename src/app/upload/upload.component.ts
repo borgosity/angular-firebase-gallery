@@ -22,6 +22,8 @@ export class UploadComponent implements OnInit, OnChanges {
   albumId = 'undefined';
   selectedAlbum: Album;
   selected: boolean = false;
+
+  imagePreviewSrc: string[] = [];
   private privacy: number = 0;
  
 
@@ -40,7 +42,19 @@ export class UploadComponent implements OnInit, OnChanges {
 
   handleFiles(event) {
     this.files = event.target.files;
+    console.log("file 0: " + JSON.stringify(event.target.files));
+    this.imagePreview();
     this.upload = null;
+  }
+
+  private imagePreview() {
+    const filesIdx = _.range(this.files.length);
+    _.each(filesIdx, (idx) => {
+      const file = this.files[idx];
+      const reader = new FileReader();
+      reader.onload = e => this.imagePreviewSrc.push(reader.result);
+      reader.readAsDataURL(file);      
+    });
   }
 
   selectChangeHandler(event: any) {
