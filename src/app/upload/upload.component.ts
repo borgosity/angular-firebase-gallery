@@ -23,7 +23,7 @@ export class UploadComponent implements OnInit, OnChanges {
   selectedAlbum: Album;
   selected: boolean = false;
 
-  imagePreviewSrc: string[] = [];
+  imagePreviewSrc: any[] = [];
   private privacy: number = 0;
  
 
