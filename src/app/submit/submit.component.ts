@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges} from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { UploadService } from '../services/upload.service';
 import { Upload } from '../models/upload.model';
 import { AlbumService } from '../services/album.service';
@@ -8,24 +8,21 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 
-
-
 @Component({
-  selector: 'app-upload',
-  templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.scss']
+  selector: 'app-submit',
+  templateUrl: './submit.component.html',
+  styleUrls: ['./submit.component.scss']
 })
-export class UploadComponent implements OnInit, OnChanges {
+export class SubmitComponent implements OnInit, OnChanges {
+
   files: FileList;
   albumKey = '';
   upload: Upload;
-  albums: Observable<Album[]>;
   albumId = 'undefined';
   selectedAlbum: Album;
   selected: boolean = false;
 
   imagePreviewSrc: any[] = [];
-  private privacy: number = 0;
 
   constructor(
     private uploadService: UploadService,
@@ -35,19 +32,26 @@ export class UploadComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    if (!this.authService.canUpload()) {
+    if (!this.authService.canSubmit()) {
       this.router.navigate(['login']);
     }
     else {
-      this.albums = this.albumService.getAllAlbums();
+      this.albumService.getSubmitAlbum().subscribe(albums => this.selectAlbum(albums));
     }
   }
 
   ngOnChanges() {
-    this.albums = this.albumService.getAllAlbums();
+    this.albumService.getSubmitAlbum().subscribe(albums => this.selectAlbum(albums));
+  }
+
+  selectAlbum(albums: Album[]) {
+    if (albums.length > 0) {
+      this.selectedAlbum = albums[0];
+    }
   }
 
   handleFiles(event) {
+    this.imagePreviewSrc = [];
     this.files = event.target.files;
     console.log("file 0: " + JSON.stringify(event.target.files));
     this.imagePreview();
@@ -60,23 +64,11 @@ export class UploadComponent implements OnInit, OnChanges {
       const file = this.files[idx];
       const reader = new FileReader();
       reader.onload = e => this.imagePreviewSrc.push(reader.result);
-      reader.readAsDataURL(file);      
+      reader.readAsDataURL(file);
     });
   }
 
-  selectChangeHandler(event: any) {
-    if (event.target.value == 'undefined' || event.target.value == 'addAlbum') {
-      this.albumId = event.target.value;
-      this.selected = false;
-    }
-    else {
-      this.albumId = this.selectedAlbum.name;
-      this.selected = true;
-    }
-    console.log(this.albumId);
-  }
-
-  uploadFiles() {
+  submitFiles() {
     const filesToUpload = this.files;
     const filesIdx = _.range(filesToUpload.length);
     _.each(filesIdx, (idx) => {
@@ -85,20 +77,7 @@ export class UploadComponent implements OnInit, OnChanges {
       this.upload.collection = this.selectedAlbum.$key;
       this.uploadService.uploadFile(this.upload, this.selectedAlbum.role, filesToUpload[idx]);
     });
-    this.updateImageCount(this.upload.collection, filesToUpload.length);
   }
 
-  private updateImageCount(albumKey: string, imageCount: number) {
-    this.albumService.updateAlbumImageCount(albumKey, imageCount);
-  }
-
-  addAlbum(name: any, privacy: any) {
-    this.albumService.addAlbum(new Album(name, privacy));
-    this.albumId = 'undefined';
-  }
-
-  compareFn(c1: any, c2: any): boolean {
-    return c1 && c2 ? c1.id === c2.id : c1 === c2;
-  }
 
 }

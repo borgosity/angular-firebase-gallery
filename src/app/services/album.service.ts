@@ -20,9 +20,7 @@ export class AlbumService {
   }
 
   addAlbum(album: Album) {
-    const filePath = "/" + this.collection + "/" + album.name;
     const db = this.db;
-
     db.collection(this.collection).add(Object.assign({}, album))
       .then((docRef) => docRef.update({ $key: docRef.id}))
       .catch((error) => console.error("Error adding album document: ", error));
@@ -68,6 +66,10 @@ export class AlbumService {
         }
       })
       .catch((error) => console.log("Error getting album:", error));
+  }
+
+  getSubmitAlbum(): Observable<Album[]> {
+    return this.db.collection(this.collection, ref => ref.where('name', '==', 'Submissions')).valueChanges();
   }
 
   updateAlbumImageCount(albumKey: string, imageCount: number) {

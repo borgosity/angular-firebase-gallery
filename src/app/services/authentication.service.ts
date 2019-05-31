@@ -129,12 +129,12 @@ export class AuthenticationService {
   }
 
   canView() : boolean {
-    const allowed = ['viewer', 'submitter', 'admin'];
+    const allowed = ['viewer', 'subscriber', 'admin'];
     return this.matchingRole(allowed);
   }
 
   canSubmit(): boolean {
-    const allowed = ['submitter', 'admin'];
+    const allowed = ['subscriber','admin'];
     return this.matchingRole(allowed);
   }
 
