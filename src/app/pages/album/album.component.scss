@@ -1,0 +1,22 @@
+ul {
+  padding: 0;
+  width: 1200px;
+  margin: 20px auto;
+
+  li {
+    display: inline;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    .thumbnail {
+      margin: 16px;
+      border: 4px solid #eee;
+      box-shadow: #555 0px 4px 8px;
+      cursor: pointer;
+      width: 300px;
+      min-width: 200px;
+      min-height: 200px;
+    }
+  }
+}

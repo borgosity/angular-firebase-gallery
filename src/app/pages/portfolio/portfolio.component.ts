@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
-import { AlbumService } from '../services/album.service';
+import { AlbumService } from '../../services/album.service';
 import { Observable } from 'rxjs';
-import { Album } from '../models/album.model';
+import { Album } from '../../models/album.model';
 
 @Component({
   selector: 'app-portfolio',

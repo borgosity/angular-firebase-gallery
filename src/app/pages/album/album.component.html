@@ -3,7 +3,7 @@
   <ul id="thumbnailList">
     <li *ngFor="let image of images | async">
       <a [routerLink]="['/image', key , image.$key]">
-        <img src="{{image.url}}" class="tn" appOnlyImgClick [name]="image.collection" [id]="image.$key" oncontextmenu="return false"/>
+        <img src="{{image.url}}" class="thumbnail" appOnlyImgClick [name]="image.collection" [id]="image.$key" oncontextmenu="return false"/>
       </a>
     </li>
   </ul>
