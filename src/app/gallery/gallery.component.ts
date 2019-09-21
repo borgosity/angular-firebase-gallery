@@ -1,9 +1,9 @@
 import { Component, OnInit, OnChanges} from '@angular/core';
-import { AlbumService } from '../../services/album.service';
+import { AlbumService } from '../services/album.service';
 import { Observable } from 'rxjs';
-import { Album } from '../../models/album.model';
+import { Album } from '../models/album.model';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { AlbumRoles } from '../../models/albumRoles.model';
+import { AlbumRoles } from '../models/albumRoles.model';
 
 @Component({
   selector: 'app-gallery',

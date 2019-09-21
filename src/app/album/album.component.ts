@@ -1,8 +1,8 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
-import { ImageService } from '../../services/image.service';
-import { AlbumService } from '../../services/album.service';
+import { ImageService } from '../services/image.service';
+import { AlbumService } from '../services/album.service';
 import { ActivatedRoute, Router } from '@angular/router'
-import { GalleryImage } from '../../models/galleryImage.model';
+import { GalleryImage } from '../models/galleryImage.model';
 import { Observable } from 'rxjs';
 
 @Component({
