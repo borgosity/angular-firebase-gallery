@@ -1,0 +1,13 @@
+<div class="card">
+  <a class="card-image" [routerLink]="['/image', key , image.$key]">
+    <img src="{{image.url}}" class="tn" appOnlyImgClick [name]="image.collection" [id]="image.$key" oncontextmenu="return false" />
+  </a>
+  <div class="card-caption">
+    <h6 class="card-title">
+      <span (click)="viewArtistDetail()">{{image.name}}</span>
+    </h6>
+    <div class="card-description">
+      Description
+    </div>
+  </div>
+</div>

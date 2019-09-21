@@ -1,10 +1,26 @@
-body{
-  font-family: 'Open Sans', sans-serif;
-  background: #efefef;
+@import 'sass/__variables';
+
+body {
+  font-family: "Lato", Helvetica, Arial, sans-serif;
+  font-size: 1.125rem;
+  color: $base-text-color;
+  margin: 0;
 }
 
-.main-content{
-  color: #333;
+h1 {
+  color: $title-text-color;
+  font-size: 1.8rem;
+  font-weight: normal;
+}
+
+.app-root {
+  display: flex;
+}
+
+.page-title {
+  text-align: center;
+  border-bottom: 1px solid $border-color;
+  padding-bottom: 16px;
 }
 
 .container-title {

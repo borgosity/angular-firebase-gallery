@@ -34,6 +34,8 @@ import { OnlyAlbumClickDirective } from './directives/only-album-click.directive
 import { ImageDataComponent } from './image-data/image-data.component';
 import { PortfolioComponent } from './portfolio/portfolio.component';
 import { SubmitComponent } from './submit/submit.component';
+import { ImageCardComponent } from './cards/image-card/image-card.component';
+import { AlbumCardComponent } from './cards/album-card/album-card.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +55,8 @@ import { SubmitComponent } from './submit/submit.component';
     ImageDataComponent,
     PortfolioComponent,
     SubmitComponent,
+    ImageCardComponent,
+    AlbumCardComponent,
   ],
   imports: [
     BrowserModule,

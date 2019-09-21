@@ -1,10 +1,8 @@
-<div class="row">
-  <h2 class="container-title">  {{title}}</h2>
-  <ul id="thumbnailList">
-    <li *ngFor="let image of images | async">
-      <a [routerLink]="['/image', key , image.$key]">
-        <img src="{{image.url}}" class="tn" appOnlyImgClick [name]="image.collection" [id]="image.$key" oncontextmenu="return false"/>
-      </a>
-    </li>
-  </ul>
-</div>
+<section class="container">
+  <section class="content">
+    <h1 class="page-title">{{title}}</h1>
+    <div class="images">
+      <app-image-card class="image" *ngFor="let image of images | async" [image]="image"></app-image-card>
+    </div>
+  </section>
+</section>

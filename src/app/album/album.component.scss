@@ -1,22 +1,24 @@
-ul {
-  padding: 0;
-  width: 1200px;
-  margin: 20px auto;
+.container {
+  display: flex;
+  justify-content: center;
 }
 
-li {
-  display: inline;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
+.content {
+  width: 100%;
 
-.tn {
-  margin: 6px;
-  border: 4px solid #eee;
-  box-shadow: #555 1px 1px 8px 1px;
-  cursor: pointer;
-  width: 300px;
-  min-width: 200px;
-  min-height: 200px;
+  .images {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 20px auto;
+  }
+
+  .image {
+    margin: 20px 10px 30px 10px;
+    min-width: 300px;
+    max-width: 350px;
+  }
 }
