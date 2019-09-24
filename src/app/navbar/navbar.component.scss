@@ -1,21 +1,63 @@
-nav {
-  font-family: 'Lato', sans-serif;
-  background: #424242;
-
-  a {
-    transition: 0.3s ease;
-  }
-
-  a:hover {
-    color: #fff;
-    background-color: #808080;
-  }
+@import 'src/sass/__variables';
+.nav-bar {
+  top: 0;
+  margin: 0;
+  padding: 0;
 }
 
-.logo{
-  color: #fff;
-  font-family: 'Lato', sans-serif;
-  font-size: 1.5em;
+.nav-bar-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: $accent-bg-color;
+  border-bottom: 1px solid $border-color;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+
+  .right-menu {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+
+  .site-link {
+    display: flex;
+    padding: 0;
+    border-bottom: 1px solid $nav-hover-border-color;
+    border-right: 1px solid $nav-hover-border-color;
+    transition: all .3s;
+
+    &:hover {
+      background-color: $nav-hover-bg-color;
+      border-bottom-color: transparent;
+    }
+
+    &:active {
+      border-bottom-color: transparent;
+    }
+
+    button {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid transparent;
+      color: $link-text-color;
+      cursor: pointer;
+      font-family: "Lato", Helvetica, Arial, sans-serif;
+      font-size: 1.125rem;
+      padding: 16px;
+      text-align: left;
+    }
+  }
+
 }
-
-

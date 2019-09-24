@@ -36,6 +36,7 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
 import { SubmitComponent } from './submit/submit.component';
 import { ImageCardComponent } from './cards/image-card/image-card.component';
 import { AlbumCardComponent } from './cards/album-card/album-card.component';
+import { FooterComponent } from './footer/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { AlbumCardComponent } from './cards/album-card/album-card.component';
     SubmitComponent,
     ImageCardComponent,
     AlbumCardComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

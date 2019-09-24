@@ -2,15 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 
 import { User } from '../models/user.model';
-import { Roles } from '../models/roles.model';
-import { map } from 'rxjs/operators';
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -21,35 +17,15 @@ export class AuthenticationService {
   private user: BehaviorSubject<User>;
   private userCollection: string = 'users';
   private userRoles: Array<string>;
+  rolesReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false); 
 
-  constructor(private afAuth: AngularFireAuth , private db: AngularFirestore) {
+  constructor(
+    private afAuth: AngularFireAuth,
+    private db: AngularFirestore) {
     this.fbUser = this.afAuth.authState;
     this.fbUser.subscribe((user) => this.getUser(user));
   }
 
-  private getUser(auth) {
-    if (auth) {
-      this.db.collection(this.userCollection).doc(auth.uid).ref.get()
-        .then((doc) => {
-          if (doc.exists) {
-            this.user = new BehaviorSubject<User>(doc.data());
-          }
-          else {
-            this.setUserAsGuest();
-          }
-        })
-        .catch(error => console.log("Error getting user:", error))
-        .finally(() => {
-          this.userRoles = _.keys(_.get(this.user.getValue(), 'roles'));
-          console.log(this.userRoles);
-        });
-    }
-    else {
-      console.log("user is guest!");
-      this.getUser({ uid: 'p8PPj4flEr4bkVNuTipM' });
-      //this.setUserAsGuest();
-    }
-  }
 
   login(email: string, password: string) {
     console.log("login");
@@ -81,6 +57,53 @@ export class AuthenticationService {
       this.setUserAsGuest();
     }
     return this.user;
+  }
+
+  isGuest(): boolean {
+    const allowed = ['guest'];
+    return this.matchingRole(allowed);
+  }
+
+  canView() : boolean {
+    const allowed = ['viewer', 'subscriber', 'admin'];
+    return this.matchingRole(allowed);
+  }
+
+  canSubmit(): boolean {
+    const allowed = ['subscriber','admin'];
+    return this.matchingRole(allowed);
+  }
+
+  canUpload(): boolean {
+    const allowed = ['admin'];
+    return this.matchingRole(allowed);
+  }
+
+  hasRole(role: string[]): boolean {
+    return this.matchingRole(role);
+  }
+
+  private getUser(auth) {
+    if (auth) {
+      this.db.collection(this.userCollection).doc(auth.uid).ref.get()
+        .then((doc) => {
+          if (doc.exists) {
+            this.user = new BehaviorSubject<User>(doc.data());
+          }
+          else {
+            this.setUserAsGuest();
+          }
+        })
+        .catch(error => console.log("Error getting user:", error))
+        .finally(() => {
+          this.userRoles = _.keys(_.get(this.user.getValue(), 'roles'));
+          this.rolesReady.next(true);
+        });
+    }
+    else {
+      this.getUser({ uid: 'p8PPj4flEr4bkVNuTipM' });
+      //this.setUserAsGuest();
+    }
   }
 
   private setUserAsGuest() {
@@ -123,29 +146,6 @@ export class AuthenticationService {
     return this.db.collection(this.userCollection).ref;
   }
 
-  isGuest(): boolean {
-    const allowed = ['guest'];
-    return this.matchingRole(allowed);
-  }
-
-  canView() : boolean {
-    const allowed = ['viewer', 'subscriber', 'admin'];
-    return this.matchingRole(allowed);
-  }
-
-  canSubmit(): boolean {
-    const allowed = ['subscriber','admin'];
-    return this.matchingRole(allowed);
-  }
-
-  canUpload(): boolean {
-    const allowed = ['admin'];
-    return this.matchingRole(allowed);
-  }
-
-  hasRole(role: string[]): boolean {
-    return this.matchingRole(role);
-  }
 
   private matchingRole(allowedRoles): boolean {
     //console.log("user roles: " + this.userRoles + ", allowed roles: "+ allowedRoles)

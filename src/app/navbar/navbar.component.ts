@@ -3,6 +3,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import * as firebae from 'firebase/app';
+import { NavigationService } from '../services/navigation.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,11 +13,17 @@ import * as firebae from 'firebase/app';
 export class NavbarComponent implements OnInit {
   title = "Gallery";
   user: Observable<firebase.User>;
+  routerlinks = [];
 
-  constructor(private authService: AuthenticationService, private router: Router) { }
+  constructor(
+    private authService: AuthenticationService,
+    private navService: NavigationService,
+    private router: Router) {
+    this.user = this.authService.authUser();
+  }
 
   ngOnInit() {
-    this.user = this.authService.authUser();
+    this.navService.navLinks.subscribe(data => this.routerlinks = data);
   }
 
   isGeneral(): boolean {
