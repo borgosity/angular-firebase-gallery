@@ -1,5 +1,4 @@
 <div class="row">
-  <h2 class="container-title">  {{title}}</h2>
   <ul id="thumbnailList">
     <li *ngFor="let album of albums | async">
       <a [routerLink]="['/album', album.name ,album.$key]">

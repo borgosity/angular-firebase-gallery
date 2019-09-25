@@ -1,15 +1,19 @@
   <nav class="nav-bar-content">
-      <ul class="site-nav">
-        <li class="site-link" *ngFor="let navlink of routerlinks">
-          <button routerLink={{navlink.slug}}>{{navlink.text}}</button>
-        </li>
-      </ul>
-      <ul class="right-menu">
+    <div class="site-nav">
+        <ul>
+          <li class="site-link" *ngFor="let navlink of routerlinks">
+            <button routerLink={{navlink.slug}}>{{navlink.text}}</button>
+          </li>
+        </ul>
+    </div>
+    <div class="right-menu">
+      <ul >
         <li class="nav-item" *ngIf="!(user|async)?.uid">
-          <a routerLink="/login" class="">Log In</a>
+          <button routerLink="/login" class="">Log In</button>
         </li>
         <li class="site-link" *ngIf="(user|async)?.uid">
-          <a href="#" (click)="logOut()" class="">Log Out</a>
+          <button href="#" (click)="logOut()" class="">Log Out</button>
         </li>
       </ul>
+    </div>
   </nav>
