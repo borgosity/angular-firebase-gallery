@@ -1,14 +1,9 @@
-<div class="row">
-  <ul id="thumbnailList">
-    <li *ngFor="let album of albums | async">
-      <a [routerLink]="['/album', album.name ,album.$key]">
-        <div class="album-tn" appOnlyAlbumClick oncontextmenu="return false">
-          <div class="album-tn-inlay" [style.background-color]="album.color"></div>
-          <div class="album-tn-name">
-            <h2 class="album-tn-text">{{album.name}}</h2>
-          </div>
-        </div>
-      </a>
-    </li>
-  </ul>
-</div>
+<section class="container">
+  <section class="content">
+    <div class="albums">
+      <app-album-card class="album" *ngFor="let album of newAlbums" [album]="album"></app-album-card>
+    </div>
+  </section>
+</section>
+
+

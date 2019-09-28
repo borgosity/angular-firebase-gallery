@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import * as firebae from 'firebase/app';
 import { NavigationService } from '../services/navigation.service';
+import { error } from 'protractor';
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +18,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     private authService: AuthenticationService,
     private navService: NavigationService,
-    private router: Router) {
+    private router: Router,
+    private route: ActivatedRoute) {
     this.user = this.authService.authUser();
   }
 
@@ -39,6 +40,16 @@ export class NavbarComponent implements OnInit {
   }
 
   logOut() {
-    this.authService.logout().then(onResolve => this.router.navigate['/']);
+    console.log('navbar service logout');
+
+    this.router.navigate(['/home'], { relativeTo: this.route });
+    this.routerlinks = [];
+    this.navService.resetLinks();
+
+    this.authService.logout();
+      //.then(onResolve => {
+    this.navService.navLinks.subscribe(data => this.routerlinks = data);
+      //})
+      //.catch(error => console.log('logout: ', error));
   }
 }

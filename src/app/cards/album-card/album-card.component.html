@@ -1,3 +1,18 @@
-<p>
-  album-card works!
-</p>
+<div class="card">
+  <a class="card-image" [routerLink]="['/album', album.name ,album.$key]">
+    <img *ngIf="album.images === unknown" src="{{spinner}}" class="tn" appOnlyAlbumClick oncontextmenu="return false" />
+    <img *ngIf="album.images !== unknown" src="{{album.images[selectedImage].url}}" class="tn" appOnlyAlbumClick oncontextmenu="return false" />
+  </a>
+  <div class="carousel">
+    <span class="dot" [id]="image.$key"
+          *ngFor="let image of album.images" (click)="onClick($event)"></span>
+  </div>
+  <div class="card-caption">
+    <h6 class="card-title">
+      <span (click)="viewArtistDetail()">{{album.name}}</span>
+    </h6>
+    <div class="card-description">
+      Description
+    </div>
+  </div>
+</div>

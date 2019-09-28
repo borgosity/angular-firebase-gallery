@@ -1,6 +1,6 @@
 <div class="card">
   <a class="card-image" [routerLink]="['/image', image.collection , image.$key]">
-    <img src="{{image.url}}" class="tn" appOnlyImgClick [name]="image.collection" [id]="image.$key" oncontextmenu="return false" />
+    <img src="{{imageSrc}}" class="tn" appOnlyImgClick [name]="image.collection" [id]="image.$key" oncontextmenu="return false" />
   </a>
   <div class="card-caption">
     <h6 class="card-title">

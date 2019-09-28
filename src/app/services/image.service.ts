@@ -5,23 +5,25 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import 'firebase/storage';
 import { GalleryImage } from '../models/galleryImage.model';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { firestore } from 'firebase';
+import { firestore, User } from 'firebase';
+import { AuthenticationService } from './authentication.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImageService {
-  private uid: string;
+  private user: User;
   private currentAlbum: string;
   private currentImage: string;
 
-  constructor(private afAuth: AngularFireAuth, private db: AngularFirestore, private storage: AngularFireStorage) {
-    this.afAuth.authState.subscribe(auth => {
-      if (auth !== undefined && auth !== null) {
-        this.uid = auth.uid;
-      }
-    });
+  constructor(
+    private authService: AuthenticationService,
+    private db: AngularFirestore,
+    private storage: AngularFireStorage) {
+    this.authService.authUser().subscribe(user =>
+      this.user = user
+    );
   }
 
   getImages(albumKey: string): Observable<GalleryImage[]> {

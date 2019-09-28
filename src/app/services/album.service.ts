@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFireModule } from 'angularfire2';
 import { Observable } from 'rxjs';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFirestore } from 'angularfire2/firestore';
 import 'firebase/storage';
 import { Album } from '../models/album.model';
 import { AlbumRoles } from '../models/albumRoles.model';
@@ -15,7 +13,9 @@ export class AlbumService {
 
   private collection = 'albums';
 
-  constructor(private authService: AuthenticationService, private db: AngularFirestore) {
+  constructor(
+    private authService: AuthenticationService,
+    private db: AngularFirestore) {
 
   }
 
@@ -40,6 +40,8 @@ export class AlbumService {
   }
 
   galleryAccessible(galleryId: string) {
+    if (this.authService.loggingOut)
+      return false;
     return this.authService.hasRole([galleryId]);
   }
 
@@ -62,7 +64,7 @@ export class AlbumService {
           return doc.data();
         }
         else {
-          return new Album('undefined', AlbumRoles.guest);
+          return new Album('undefined', AlbumRoles.guest, []);
         }
       })
       .catch((error) => console.log("Error getting album:", error));

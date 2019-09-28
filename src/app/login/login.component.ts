@@ -1,4 +1,4 @@
-import { Component, NgZone} from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { Router } from '@angular/router';
 
@@ -13,41 +13,54 @@ export class LoginComponent {
 
   email: string;
   password: string;
-  errorMsg: string;
+  errorMsg: string = '';
 
   constructor(private ngZone: NgZone, private authService: AuthenticationService, private router: Router) {
     authService.authUser().subscribe(user => {
       if (user) {
-        this.navigate(['portfolio'])
+        this.navigate(['/home'])
       }
     });
   }
 
   signIn() {
+    this.errorMsg = '';
     this.authService.login(this.email, this.password)
       .then(resolve => {
         this.password = '';
-        this.navigate(['portfolio']);
+        this.navigate(['/home']);
       })
-      .catch(error => this.errorMsg = error.msg);
+      .catch(error => this.processError(error));
   }
 
   googleSignIn() {
-    console.log("google sign in");
     this.authService.googleLogin()
-      .then(() => this.navigate(['portfolio']))
-      .catch(error => this.errorMsg = error.msg);
+      .then(() => {
+        this.errorMsg = '';
+        this.navigate(['/home']);
+      })
+      .catch(error => this.processError(error));
+  }
+
+  processError(error: any) {
+    if (error.code === 'auth/user-not-found')
+      this.errorMsg = '! Account not found, please register :D';
+    else
+      this.errorMsg = '! Email or Password is incorrect :(';
+
+    console.log(error);
   }
 
   emailSignIn() {
-    console.log("email sign in");
     this.emailLogin = !this.emailLogin;
   }
 
   navigate(commands: any[]) {
     this.ngZone.run(() => this.router.navigate(commands))
       .then()
-      .catch(error => this.errorMsg = error.msg);
+      .catch(error => {
+        console.log('navigation error: ', error);
+      });
   }
 
 }

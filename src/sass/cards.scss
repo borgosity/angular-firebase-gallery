@@ -16,14 +16,15 @@
 }
 
 .card-image {
-  display: block;
+  display: flex;
   position: relative;
-  min-height: 200px;
+  min-height: 250px;
   cursor: pointer;
 
   img {
     display: block;
     width: 100%;
+    object-fit: contain;
   }
 
   &:before, &:after {

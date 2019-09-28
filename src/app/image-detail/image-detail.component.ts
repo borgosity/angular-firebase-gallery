@@ -43,7 +43,7 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private router: Router,
     private route: ActivatedRoute) {
-    this.album = new Album('loading...', AlbumRoles.guest);
+    this.album = new Album('loading...', AlbumRoles.guest, []);
     this.imageData = { totalViews: 0, userViews: [{}] };
   }
 

@@ -11,13 +11,13 @@ import { SubmitComponent } from './submit/submit.component';
 
 
 const routes: Routes = [
-  { path: "portfolio", component: PortfolioComponent},
+  { path: "home", component: PortfolioComponent},
   { path: "album/:name/:id", component: AlbumComponent},
   { path: "image/:album/:id", component: ImageDetailComponent},
   { path: "upload", component: UploadComponent, canActivate: [AuthenticationGuardService] },
   { path: "submit", component: SubmitComponent, canActivate: [AuthenticationGuardService] },
   { path: "gallery/:type/:name", component: GalleryComponent, canActivate: [AuthenticationGuardService] },
-  { path: "", redirectTo: "/portfolio", pathMatch: 'full' },
+  { path: "", redirectTo: "/home", pathMatch: 'full' },
   { path: "login", component: LoginComponent }
 ];
 

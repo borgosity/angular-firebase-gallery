@@ -17,7 +17,8 @@ export class AuthenticationService {
   private user: BehaviorSubject<User>;
   private userCollection: string = 'users';
   private userRoles: Array<string>;
-  rolesReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false); 
+  rolesReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  loggingOut: boolean = false;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -28,8 +29,6 @@ export class AuthenticationService {
 
 
   login(email: string, password: string) {
-    console.log("login");
-
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then(credential => {
         this.updateUser(credential.user)
@@ -45,7 +44,12 @@ export class AuthenticationService {
   }
 
   logout() {
-    return this.afAuth.auth.signOut();
+    console.log('auth service logout');
+    this.loggingOut = true;
+    this.afAuth.auth.signOut()
+      .then(() => this.setUserAsGuest())
+      .catch(error => console.log(error))
+      .finally(() => this.loggingOut = false);
   }
 
   authUser() : Observable<firebase.User> {
