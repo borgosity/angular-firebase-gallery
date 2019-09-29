@@ -38,8 +38,6 @@ export class GalleryComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private galleryAccessible() {
-    console.log('checking access to gallery: ', this.route.snapshot.params['type']);
-
     if (this.galleryService.galleryAccessible(AlbumRoles[this.route.snapshot.params['type']])) {
       this.title = this.route.snapshot.params['name'] + ' Albums';
       this.galleryService.albums.subscribe(albums => this.newAlbums = albums);

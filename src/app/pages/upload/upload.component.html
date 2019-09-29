@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="form-content" >
+    <h1 class="title">Upload New Photos</h1>
+    <div class="form-section">
+      <div class="form-group">
+        <label for="albums"> Album: </label>
+        <select class="classic" id="albums" #albumSelect required [(ngModel)]="selectedAlbum" (change)="selectChangeHandler($event)">
+          <option value="undefined" [selected]="albumId == 'undefined'">Select Album</option>
+          <option [ngValue]="album" *ngFor="let album of albums | async">{{album.name}}</option>
+          <option value="addAlbum">Add Album</option>
+        </select>
+      </div>
+      <div class="form-group" *ngIf="albumId == 'addAlbum'">
+        <input class="" #albumName id="albumNames" value="" placeholder="New Photo Album Name" required />
+        <select class="" id="privacy" #privacySelect required>
+          <option value="undefined" [selected]="selectedPrivacy == 'undefined'">Select Privacy</option>
+          <option value="0">Public</option>
+          <option value="1">Viewer</option>
+          <option value="2">Subscriber</option>
+          <option value="3">Admin</option>
+        </select>
+        <button class="" (click)="addAlbum(albumName.value, privacySelect.value)" [disabled]="albumId == ''">Add Album</button>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-content" ([ngModel])="selected" *ngIf="selected">
+        <div class="form-group" >
+          <label class="" for="browse"> Select Photos: </label>
+          <input class="" id="browse" type="file" (change)="handleFiles($event)" multiple [disabled]="albumId == 'undefined' || albumId == 'addAlbum'"/>
+          <div *ngIf="imagePreviewSrc">
+            <img *ngFor="let image of imagePreviewSrc" class="img-preview" [src]="image" />
+          </div>
+        </div>
+        <div class="btn-right">
+          <button class="" (click)="uploadFiles()" [disabled]="upload || !files">Upload Images</button>
+        </div>
+        <ngb-progressbar *ngIf="upload" showValue="true" type="" [value]="upload?.progress"></ngb-progressbar>
+      </div>
+    </div>
+  </div>
+</div>

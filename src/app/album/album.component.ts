@@ -1,32 +1,40 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
+import { Observable } from 'rxjs';
+
 import { ImageService } from '../services/image.service';
 import { AlbumService } from '../services/pages/album.service';
-import { ActivatedRoute, Router } from '@angular/router'
 import { GalleryImage } from '../models/galleryImage.model';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-album',
   templateUrl: './album.component.html',
   styleUrls: ['./album.component.scss']
 })
-export class AlbumComponent implements OnInit {
+export class AlbumComponent implements OnInit, Onchanges, OnDestroy {
   title = 'Photos';
   key: string;
   images: Observable<GalleryImage[]>;
+  private navigationSubscription;
 
   constructor(
     private imageService: ImageService,
     private albumService: AlbumService,
     private router: Router,
-    private route: ActivatedRoute) { }
-
-  ngOnInit() {
-    this.albumAccessible();
+    private route: ActivatedRoute) {
+    this.navigationSubscription = router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.albumAccessible();
+      }
+    });
   }
 
-  ngOnChanges() {
-    this.albumAccessible();
+  ngOnInit() { }
+
+  ngOnChanges() { }
+
+  ngOnDestroy() {
+    this.navigationSubscription.unsubscribe();
   }
 
   private albumAccessible() {
@@ -38,7 +46,7 @@ export class AlbumComponent implements OnInit {
           this.getAlbumImages(this.route.snapshot.params['id']);
         }
         else {
-          this.router.navigate(['login']);
+          this.router.navigate(['/login']);
         }
       })
       .catch(error => console.log("Error getting album accessibility: ", error));

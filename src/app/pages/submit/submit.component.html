@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="form-content">
+    <h1 class="title">Say Hi!</h1>
+    <p class="title-intro">Send a message, pic or vid :D</p>
+    <div class="form-section">
+      <div class="form-content">
+        <div class="form-group">
+          <label title="Message" class="">Message:</label>
+          <textarea rows="5" cols="20" placeholder="Your awesome..." required=""></textarea>
+        </div>
+        <div class="btn-right">
+          <button class="" (click)="submitFiles()" [disabled]="upload || !files">Send</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-content" ([ngModel])="selected">
+        <div class="form-group">
+          <label class="" for="browse"> Select a Pic: </label>
+          <input class="" id="browse" type="file" (change)="handleFiles($event)" multiple />
+          <div *ngIf="imagePreviewSrc">
+            <img *ngFor="let image of imagePreviewSrc" class="img-preview" [src]="image" />
+          </div>
+        </div>
+        <div class="btn-right">
+          <button class="" (click)="submitFiles()" [disabled]="upload || !files">Send</button>
+          <ngb-progressbar *ngIf="upload" showValue="true" type="" [value]="upload?.progress"></ngb-progressbar>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

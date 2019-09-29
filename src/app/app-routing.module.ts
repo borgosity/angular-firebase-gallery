@@ -4,10 +4,10 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
 import { GalleryComponent } from "./pages/gallery/gallery.component";
 import { AlbumComponent } from "./album/album.component";
 import { ImageDetailComponent } from "./image-detail/image-detail.component";
-import { LoginComponent } from './login/login.component';
-import { UploadComponent } from './upload/upload.component';
+import { LoginComponent } from './pages/login/login.component';
+import { UploadComponent } from './pages/upload/upload.component';
 import { AuthenticationGuardService } from './services/authentication-guard.service';
-import { SubmitComponent } from './submit/submit.component';
+import { SubmitComponent } from './pages/submit/submit.component';
 
 
 const routes: Routes = [
