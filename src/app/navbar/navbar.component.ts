@@ -46,10 +46,10 @@ export class NavbarComponent implements OnInit {
     this.routerlinks = [];
     this.navService.resetLinks();
 
-    this.authService.logout();
-      //.then(onResolve => {
-    this.navService.navLinks.subscribe(data => this.routerlinks = data);
-      //})
-      //.catch(error => console.log('logout: ', error));
+    this.authService.logout()
+      .then(() => {
+        this.navService.navLinks.subscribe(data => this.routerlinks = data);
+      })
+      .catch(error => console.log('logout: ', error));
   }
 }

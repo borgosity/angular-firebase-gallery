@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PortfolioComponent } from './portfolio/portfolio.component';
-import { GalleryComponent } from "./gallery/gallery.component";
+import { GalleryComponent } from "./pages/gallery/gallery.component";
 import { AlbumComponent } from "./album/album.component";
 import { ImageDetailComponent } from "./image-detail/image-detail.component";
 import { LoginComponent } from './login/login.component';

@@ -43,10 +43,10 @@ export class AuthenticationService {
       });
   }
 
-  logout() {
+  async logout() {
     console.log('auth service logout');
     this.loggingOut = true;
-    this.afAuth.auth.signOut()
+    await this.afAuth.auth.signOut()
       .then(() => this.setUserAsGuest())
       .catch(error => console.log(error))
       .finally(() => this.loggingOut = false);

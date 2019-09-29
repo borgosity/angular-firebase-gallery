@@ -1,17 +1,15 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { ImageService } from '../services/image.service';
-import { AlbumService } from '../services/album.service';
+import { AlbumService } from '../services/pages/album.service';
 import { ContextMenuService } from '../services/context-menu.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Album } from '../models/album.model';
-import { ContextMenuType } from '../models/contextMenuType.model';
 import { ImageViewData } from '../models/imageViewData.model';
 import { UserViewData } from '../models/userViewData.model';
 import { ImageDataService } from '../services/image-data.service';
 import { AuthenticationService } from '../services/authentication.service';
-import { Observable, Subscription, timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { AlbumRoles } from '../models/albumRoles.model';
-import { User } from '../models/user.model';
 import { GalleryImage } from '../models/galleryImage.model';
 
 @Component({
@@ -39,7 +37,6 @@ export class ImageDetailComponent implements OnInit, OnDestroy {
     private imageService: ImageService,
     private albumService: AlbumService,
     private dataService: ImageDataService,
-    private contextMenu: ContextMenuService,
     private authService: AuthenticationService,
     private router: Router,
     private route: ActivatedRoute) {

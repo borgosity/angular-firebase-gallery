@@ -9,42 +9,41 @@ import { AuthenticationService } from './authentication.service';
 export class NavigationService {
 
   navLinks: BehaviorSubject<NavLink[]> = new BehaviorSubject<NavLink[]>([]);
-  private allLinks: NavLink[] = [{ name: 'home', slug: '/home', text: 'Home' }];
+  private homeLink = { name: 'home', slug: '/home', text: 'Home' };
 
   constructor(private authService: AuthenticationService) {
-    this.navLinks.next(this.allLinks);
+    this.navLinks.next([this.homeLink]);
     authService.rolesReady.subscribe(ready => {
       if (ready) {
         console.log('roles ready');
-        this.navbarLinks();
+        this.navLinks.next(this.navbarLinks());
       }
     });
   }
 
-  async navbarLinks() {
-    if (this.allLinks.length > 1)
-      this.resetLinks();
-
+  private navbarLinks(): NavLink[] {
+    let links: NavLink[] = [this.homeLink];
     if (this.authService.canView()) {
       console.log('can view photo');
 
-      this.allLinks.push({ name: 'personal', slug: '/gallery/1/Photo', text: 'Albums' });
+      links.push({ name: 'personal', slug: '/gallery/1/Photo', text: 'Albums' });
     }
     if (this.authService.canSubmit()) {
       console.log('can view sub');
 
-      this.allLinks.push({ name: 'private', slug: '/gallery/2/Subscription', text: 'Snaps' });
-      this.allLinks.push({ name: 'submit', slug: '/submit', text: 'Say Hi!' });
+      links.push({ name: 'private', slug: '/gallery/2/Subscription', text: 'Snaps' });
+      links.push({ name: 'submit', slug: '/submit', text: 'Say Hi!' });
     }
     if (this.authService.canUpload()) {
       console.log('can view upload');
 
-      this.allLinks.push({ name: 'upload', slug: '/upload', text: 'Upload' });
+      links.push({ name: 'upload', slug: '/upload', text: 'Upload' });
     }
+    return links;
   }
 
   resetLinks() {
     console.log('reset links');
-    this.allLinks = [{ name: 'home', slug: '/home', text: 'Home' }];
+    this.navLinks.next([this.homeLink]);
   }
 }

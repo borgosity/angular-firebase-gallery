@@ -3,7 +3,7 @@ import { ImageService } from 'src/app/services/image.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ContextMenuService } from 'src/app/services/context-menu.service';
 import { Router } from '@angular/router';
-import { AlbumService } from 'src/app/services/album.service';
+import { AlbumService } from 'src/app/services/pages/album.service';
 
 @Component({
   selector: 'app-image-menu',

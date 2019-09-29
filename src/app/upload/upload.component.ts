@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges} from '@angular/core';
 import { UploadService } from '../services/upload.service';
 import { Upload } from '../models/upload.model';
-import { AlbumService } from '../services/album.service';
+import { AlbumService } from '../services/pages/album.service';
 import { Album } from '../models/album.model';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';

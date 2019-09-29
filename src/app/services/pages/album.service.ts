@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { Observable } from 'rxjs';
 import 'firebase/storage';
-import { Album } from '../models/album.model';
-import { AlbumRoles } from '../models/albumRoles.model';
-import { AuthenticationService } from './authentication.service';
+
+import { AuthenticationService } from '../authentication.service';
+import { AlbumRoles } from '../../models/albumRoles.model';
+import { Album } from '../../models/album.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,12 +38,6 @@ export class AlbumService {
         }
       })
       .catch((error) => console.log("Error checking album access:", error));
-  }
-
-  galleryAccessible(galleryId: string) {
-    if (this.authService.loggingOut)
-      return false;
-    return this.authService.hasRole([galleryId]);
   }
 
   getAlbums(role: string): Observable<Album[]> {
