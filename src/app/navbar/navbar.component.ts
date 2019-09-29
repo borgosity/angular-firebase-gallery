@@ -40,12 +40,9 @@ export class NavbarComponent implements OnInit {
   }
 
   logOut() {
-    console.log('navbar service logout');
-
     this.router.navigate(['/home'], { relativeTo: this.route });
     this.routerlinks = [];
     this.navService.resetLinks();
-
     this.authService.logout()
       .then(() => {
         this.navService.navLinks.subscribe(data => this.routerlinks = data);

@@ -23,19 +23,15 @@ export class GalleryComponent implements OnInit, OnChanges, OnDestroy {
     private route: ActivatedRoute) {
     this.navigationSubscription = router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        console.log('gallery navigation end')
         this.galleryAccessible();
       }
     });
   }
 
   ngOnInit() {
-    //console.log('gallery on init')
   }
 
-  ngOnChanges() {
-    //this.galleryAccessible();
-  }
+  ngOnChanges() {  }
 
   ngOnDestroy() {
     this.navigationSubscription.unsubscribe();
@@ -45,13 +41,10 @@ export class GalleryComponent implements OnInit, OnChanges, OnDestroy {
     console.log('checking access to gallery: ', this.route.snapshot.params['type']);
 
     if (this.galleryService.galleryAccessible(AlbumRoles[this.route.snapshot.params['type']])) {
-      console.log('has access gallery: ', this.route.snapshot.params['name']);
-
       this.title = this.route.snapshot.params['name'] + ' Albums';
       this.galleryService.albums.subscribe(albums => this.newAlbums = albums);
     }
     else {
-      console.log('route home from gallery');
       this.router.navigate(['/home']);
     }
   }

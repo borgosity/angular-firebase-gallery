@@ -24,19 +24,13 @@ export class NavigationService {
   private navbarLinks(): NavLink[] {
     let links: NavLink[] = [this.homeLink];
     if (this.authService.canView()) {
-      console.log('can view photo');
-
       links.push({ name: 'personal', slug: '/gallery/1/Photo', text: 'Albums' });
     }
     if (this.authService.canSubmit()) {
-      console.log('can view sub');
-
       links.push({ name: 'private', slug: '/gallery/2/Subscription', text: 'Snaps' });
       links.push({ name: 'submit', slug: '/submit', text: 'Say Hi!' });
     }
     if (this.authService.canUpload()) {
-      console.log('can view upload');
-
       links.push({ name: 'upload', slug: '/upload', text: 'Upload' });
     }
     return links;

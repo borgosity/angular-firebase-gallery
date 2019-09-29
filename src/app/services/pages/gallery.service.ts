@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { Album } from '../../models/album.model';
 import { AuthenticationService } from '../authentication.service';
@@ -34,8 +34,6 @@ export class GalleryService {
   }
 
   private getAlbums(role: string) {
-    console.log('GalleryService getAlbums for role: ', role);
-
     this.db.collection<Album>(this.collection, ref => ref.where('role', '==', role))
       .valueChanges().subscribe(
         albums => {
