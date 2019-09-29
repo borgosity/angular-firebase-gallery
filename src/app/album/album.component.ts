@@ -11,7 +11,7 @@ import { GalleryImage } from '../models/galleryImage.model';
   templateUrl: './album.component.html',
   styleUrls: ['./album.component.scss']
 })
-export class AlbumComponent implements OnInit, Onchanges, OnDestroy {
+export class AlbumComponent implements OnInit, OnChanges, OnDestroy {
   title = 'Photos';
   key: string;
   images: Observable<GalleryImage[]>;
