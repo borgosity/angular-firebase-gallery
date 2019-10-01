@@ -9,6 +9,7 @@ import { AuthenticationService } from './authentication.service';
 export class NavigationService {
 
   navLinks: BehaviorSubject<NavLink[]> = new BehaviorSubject<NavLink[]>([]);
+  rightNavLinks: BehaviorSubject<NavLink[]> = new BehaviorSubject<NavLink[]>([]);
   private homeLink = { name: 'home', slug: '/home', text: 'Home' };
 
   constructor(private authService: AuthenticationService) {
@@ -17,6 +18,7 @@ export class NavigationService {
       if (ready) {
         console.log('roles ready');
         this.navLinks.next(this.navbarLinks());
+        this.rightNavLinks.next(this.rightNavMenu());
       }
     });
   }
@@ -28,6 +30,13 @@ export class NavigationService {
     }
     if (this.authService.canSubmit()) {
       links.push({ name: 'private', slug: '/gallery/2/Subscription', text: 'Snaps' });
+    }
+    return links;
+  }
+
+  private rightNavMenu() {
+    let links: NavLink[] = [];
+    if (this.authService.canSubmit()) {
       links.push({ name: 'submit', slug: '/submit', text: 'Say Hi!' });
     }
     if (this.authService.canUpload()) {

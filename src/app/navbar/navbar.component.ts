@@ -14,6 +14,7 @@ export class NavbarComponent implements OnInit {
   title = "Gallery";
   user: Observable<firebase.User>;
   routerlinks = [];
+  rightNavLinks = [];
 
   constructor(
     private authService: AuthenticationService,
@@ -25,6 +26,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.navService.navLinks.subscribe(data => this.routerlinks = data);
+    this.navService.rightNavLinks.subscribe(data => this.rightNavLinks = data);
   }
 
   isGeneral(): boolean {

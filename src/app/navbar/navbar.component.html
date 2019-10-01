@@ -1,3 +1,25 @@
+<nav class="title-bar">
+  <div class="title">
+    <h1>Phillogram</h1> 
+  </div>
+  <div class="right-menu">
+    <ul>
+      <li class="site-link" *ngIf="!(user|async)?.uid">
+        <button class="text-btn" routerLink="/login" >
+          <span class="text">Log In | Sign Up</span>
+        </button>
+      </li>
+      <li class="site-link" *ngIf="(user|async)?.uid">
+        <button href="#" class="icon-btn">
+          <img class="alert" src="assets/icons/notifications_none-24px.svg" />
+        </button>
+        <button href="#" (click)="logOut()" class="icon-btn">
+          <img class="account" src="assets/icons/account_circle-24px.svg" />
+        </button>
+      </li>
+    </ul>
+  </div>
+</nav>
 <nav class="nav-bar-content">
   <div class="site-nav">
     <ul>
@@ -10,14 +32,9 @@
   </div>
   <div class="right-menu">
     <ul>
-      <li class="site-link" *ngIf="!(user|async)?.uid">
-        <button routerLink="/login" class="">
-          <span class="text">Log In</span>
-        </button>
-      </li>
-      <li class="site-link" *ngIf="(user|async)?.uid">
-        <button href="#" (click)="logOut()" class="">
-          <span class="text">Log Out</span>
+      <li class="site-link" *ngFor="let rightlink of rightNavLinks">
+        <button routerLink={{rightlink.slug}}>
+          <span class="text">{{rightlink.text}}</span>
         </button>
       </li>
     </ul>
